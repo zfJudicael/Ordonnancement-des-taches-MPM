@@ -460,7 +460,7 @@ const submitTableCreation = ()=>{
     overflow: hidden;
 
     .navigation{
-      width: 20%;
+      width: 24%;
       padding: 0 15px 15px 15px;
       overflow-y: scroll;
 
@@ -481,7 +481,7 @@ const submitTableCreation = ()=>{
     }
 
     .wrapper{
-      width: 80%;
+      width: 76%;
       overflow-y: scroll;
 
       .topnav{
