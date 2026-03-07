@@ -3,7 +3,7 @@
         <h3 style="text-align: center;">MPM Graph</h3>
 
         <button @click="download">Télécharger</button>
-        <div ref="flowRef" :style="{border: '2px solid gray', overflow: 'hidden', height: '450px'}">
+        <div ref="flowRef" :style="{border: '2px solid gray', overflow: 'hidden', height: '500px'}">
             <VueFlow :nodes="nodes" :edges="edges" :style="{ background: 'white' }">
                 <template #node-start="startNodeProps">
                     <StartNode v-bind="startNodeProps" />
@@ -31,7 +31,7 @@
 <script setup lang="ts">
 import type { Node, Edge } from '@vue-flow/core';
 import { VueFlow } from '@vue-flow/core';
-import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
+import { domToPng } from 'modern-screenshot';
 import { Controls } from '@vue-flow/controls';
 import { Background } from '@vue-flow/background';
 import StartNode from './vue_flow/StartNode.vue';
@@ -55,7 +55,9 @@ const flowRef = ref<HTMLElement>()
 const download = async ()=>{
 
     if(flowRef.value){
-        const dataURL = await toPng(flowRef.value)
+        const dataURL = await domToPng(flowRef.value, {
+            scale: 2
+        })
 
         const link = document.createElement("a")
         link.download = "diagramMPM.png"

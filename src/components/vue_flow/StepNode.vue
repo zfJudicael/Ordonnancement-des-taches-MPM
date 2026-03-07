@@ -46,10 +46,12 @@ const props = defineProps<NodeProps>()
 
         .totalFloat{
             position: absolute;
-            top: -30px;
+            top: -25px;
             left: 50%;
+            padding: 2px;
+            background-color: green;
             transform: translateX(-50%);
-            color: black;
+            color: white;
         }
 
         .date{
