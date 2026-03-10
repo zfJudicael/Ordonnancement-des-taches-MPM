@@ -1,24 +1,24 @@
 <template>
-    <div class="tableView" style="display: flex; flex-wrap: wrap;margin-top: 20px; margin-bottom: 20px; justify-content: center;"> 
-        <div style="padding: 4px; border: 1px solid black; font-weight: bold; ">
-          <p style="height: 40px; margin: 2px;">Tâches</p>
-          <p style="height: 40px; margin: 2px;">Durée</p>
-          <p style="height: 40px; margin: 2px;">T.ant.</p>
-          <p style="height: 40px; margin: 2px;">T.succ.</p>
+    <div class="tableView"> 
+        <div class="title">
+          <p style="">Tâches</p>
+          <p>Durée</p>
+          <p>T.ant.</p>
+          <p>T.succ.</p>
         </div>
-        <div style="padding: 4px; min-width: 40px; text-align: center; border: 1px solid black;"
-          v-for="[key, value] in table.getTasks" 
-          
+
+        <div class="data"
+          v-for="[key, value] in table.getTasks"  
         >
-          <p style="height: 40px; margin: 2px;">{{ key }}</p>
-          <p style="height: 40px; margin: 2px;">{{ value.duration }}</p>
-          <p style="height: 40px; margin: 2px;">
+          <p>{{ key }}</p>
+          <p>{{ value.duration }}</p>
+          <p>
             <template v-if="value.previousTasks.length > 0">
               <span v-for="prevTask in value.previousTasks">{{ `${prevTask} ` }}</span>
             </template>
             <span v-else>-</span>
           </p>
-          <p style="height: 40px; margin: 2px;">
+          <p>
             <template v-if="value.nextTasks?.[0] == 'fin' ">
               <span style="font-weight: bold;">F</span>
             </template>
@@ -38,3 +38,30 @@ defineProps({
     }
 })
 </script>
+
+<style lang="scss">
+.tableView{
+  display: flex; 
+  flex-wrap: wrap;
+  margin-top: 20px;
+  margin-bottom: 20px; 
+  justify-content: center;
+  
+  p{
+    height: 40px; margin: 2px;
+  }
+
+  .title{
+    padding: 4px; 
+    border: 1px solid black; 
+    font-weight: bold; 
+  }
+
+  .data{
+    padding: 4px; 
+    min-width: 40px; 
+    text-align: center; 
+    border: 1px solid black;
+  }
+}
+</style>
