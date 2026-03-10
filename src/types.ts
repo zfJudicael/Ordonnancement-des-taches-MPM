@@ -4,4 +4,5 @@ export type ImageType = 'png' | 'jpeg';
 
 export interface UseScreenshotOptions extends Options{
     type?: ImageType;
+    fileName?: string;
 }
