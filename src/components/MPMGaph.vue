@@ -2,7 +2,7 @@
     <div class="mpmGraph">
         <h3 style="text-align: center;">MPM Graph</h3>
 
-        <div ref="flowRef" :style="{border: '2px solid gray', overflow: 'hidden', height: '500px', position: 'relative'}">
+        <div ref="vueFlowRef" :style="{border: '2px solid gray', overflow: 'hidden', height: '500px', position: 'relative'}">
             <div id="toolbar">
                 <div class="dropdown_button">
                     <div class="menu_item">
@@ -10,9 +10,8 @@
 
                         <ul class="dropdown">
                             <li style="font-size: small;">Format :</li>
-                            <li class="dropdown-item">Pdf</li>
-                            <li class="dropdown-item" @click="downloadDiagram('png')">Png</li>
-                            <li class="dropdown-item" @click="downloadDiagram('jpeg')">Jpeg</li>
+                            <li class="dropdown-item" @click="doScreenshot('png')">Png</li>
+                            <li class="dropdown-item" @click="doScreenshot('jpeg')">Jpeg</li>
                         </ul>
                     </div>
                 </div>
@@ -50,13 +49,14 @@
 import { ref } from 'vue';
 import type { Node, Edge } from '@vue-flow/core';
 import { VueFlow } from '@vue-flow/core';
-import { domToJpeg, domToPng } from 'modern-screenshot';
 import { Controls, ControlButton } from '@vue-flow/controls';
 import { Background } from '@vue-flow/background';
 import StartNode from './vue_flow/StartNode.vue';
 import StepNode from './vue_flow/StepNode.vue';
 import DefaultEdge from './vue_flow/DefaultEdge.vue';
 import EndNode from './vue_flow/EndNode.vue';
+import { useScreenshot } from '@/composables/useScreenshot';
+import type { ImageType } from '@/types';
 
 defineProps({
   nodes: {
@@ -69,39 +69,31 @@ defineProps({
   }
 })
 
-const flowRef = ref<HTMLElement>()
+const vueFlowRef = ref<HTMLElement>()
 const filter = (node: globalThis.Node)=>{
     if (node instanceof HTMLElement && node.id === 'toolbar') return false;
 
     return true;
 }
-const downloadDiagram = async (documentFormat: 'jpeg' | 'png')=>{
-    if(flowRef.value){
-        let dataURL = '';
 
-        if(documentFormat == 'jpeg'){
-            dataURL = await domToJpeg(flowRef.value, {
-                scale: 2,
-                filter: filter
-            })
-        }else{
-            dataURL = await domToPng(flowRef.value, {
-                scale: 2,
-                filter: filter
-            })
-        }
-
-        const link = document.createElement("a");
-        link.download = `diagram.${documentFormat}`
-        link.href = dataURL
-        link.click()
+const { capture } = useScreenshot()
+const doScreenshot = async (imageType: ImageType)=>{
+    if(!vueFlowRef.value){
+        return;
     }
+    
+    await capture(vueFlowRef.value, {
+        type: imageType,
+        scale: 2,
+        quality: 0.95,
+        filter: filter
+    })
 }
 
 const toggleFullScreen = async ()=>{
-    if(flowRef.value){
+    if(vueFlowRef.value){
         if(!document.fullscreenElement){
-            await flowRef.value.requestFullscreen();
+            await vueFlowRef.value.requestFullscreen();
         }else{
             document.exitFullscreen?.()
         }
