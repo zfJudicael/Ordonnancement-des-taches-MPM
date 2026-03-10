@@ -91,6 +91,7 @@ export class TableModel {
             value.nextTasks = []
             value.earlyDate = 0
             value.lateDate = 0
+            value.isCritical = false
         })
     }
 
@@ -352,6 +353,7 @@ export class TableModel {
                     type: 'default',
                     source: taskKey,
                     target: nextTaskKey,
+                    animated: isCritical,
                     data: {
                         duration: task.duration,
                         isCritical
