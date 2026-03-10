@@ -6,7 +6,7 @@
 
       <template v-if="selectedTable">
         <div class="table_description">
-          <p>Nom du tableau : {{ selectedTable.name }}</p>
+          <p>Nom du projet : {{ selectedTable.name }}</p>
           <p>Nombre de tâches : {{ selectedTable.getTasks.size }}</p>
           <p>Durée totale: {{ selectedTable.totalDuration }}</p>
 
@@ -22,24 +22,10 @@
 
         <h3>Liste des tâches</h3>
         <div class="taskLists">
-          <Card v-for="[key, task] in selectedTable.getTasks" style="margin-bottom: 5px;">
-            <template #content>
-              <div style="display: flex; justify-content: end; gap: 4px;">
-                <Button icon="pi pi-pen-to-square" variant="text" severity="info" raised rounded aria-label="Edit" size="small" 
-                 @click="openTaskUpdatingDialog(key, task)" />
-                <Button icon="pi pi-trash" variant="text" severity="danger" raised rounded aria-label="Delete" size="small" 
-                 @click="confirmDelete(key, task)"
-                />
-              </div>
-              <p style="margin-top: 0;">Nom: {{ key }}</p>
-              <p>Durée : {{ task.duration }}</p>
-              <p>Marge de retard : {{ task.lateDate - task.earlyDate }}</p>
-              <p style="margin-bottom: 2px;">Tâche(s) antérieure(s) :</p>
-              <div style="display: flex; flex-wrap: wrap; gap: 5px;">
-                <Chip v-for="previousTask in task.previousTasks" :label="previousTask"/>
-              </div>
-            </template>
-          </Card>
+          <TaskCard v-for="[taskKey, task] in selectedTable.getTasks" :key="taskKey" :task-key="taskKey" :task="task" 
+            @edit="openTaskUpdatingDialog(taskKey, task)" 
+            @remove="confirmDelete(taskKey, task)"
+          />
         </div>
       </template>
     </div>
@@ -161,7 +147,6 @@
 import { onMounted, reactive, ref } from 'vue'
 import InputText from 'primevue/inputtext';
 import InputNumber from 'primevue/inputnumber';
-import Chip from 'primevue/chip';
 import Message from 'primevue/message';
 import Button from 'primevue/button';
 import Select from 'primevue/select';
@@ -177,6 +162,7 @@ import { TableModel, type TaskModel } from '@/models/TableModel';
 import TableView from '@/components/TableView.vue';
 import MPMGaph from '@/components/MPMGaph.vue';
 import { DefaultTable1, DefaultTable2, DefaultTable3 } from '@/const/DefaultTables';
+import TaskCard from '@/components/TaskCard.vue';
 
 
 const toast = useToast()
