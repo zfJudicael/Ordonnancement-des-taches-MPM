@@ -1,5 +1,5 @@
 <template>
-  <BaseEdge :path="path[0]" :style="{ stroke: data.isCritical ? 'red' : '' }"/>
+  <BaseEdge :path="path[0]" :style="{ stroke: data.isCritical ? 'red' : '', strokeWidth: 2 }"/>
 
   <EdgeLabelRenderer>
     <div
