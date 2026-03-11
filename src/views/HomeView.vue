@@ -5,14 +5,14 @@
         <h3 class="title">Ordonnancement des tâches</h3>
         <Divider />
 
-        <div v-if="selectedTable" class="table_description">
-          <p>Nom du projet : {{ selectedTable.name }}</p>
-          <p>Nombre de tâches : {{ selectedTable.getTasks.size }}</p>
-          <p>Durée totale: {{ selectedTable.totalDuration }}</p>
+        <div v-if="selectedProject" class="project_description">
+          <p>Nom du projet : {{ selectedProject.name }}</p>
+          <p>Nombre de tâches : {{ selectedProject.getTasks.size }}</p>
+          <p>Durée totale: {{ selectedProject.totalDuration }}</p>
   
             <div style="display: flex; justify-content: end; gap: 5px;">
               <Button icon="pi pi-trash" severity="danger" raised size="small" label="Supprimer" @click="deleteTable"
-                v-if="!['Test 1', 'Test 2', 'Test 3'].includes(selectedTable.name)"
+                v-if="!['Test 1', 'Test 2', 'Test 3'].includes(selectedProject.name)"
               />
             </div>
         </div>
@@ -21,13 +21,13 @@
 
       </div>
 
-      <template v-if="selectedTable">
+      <template v-if="selectedProject">
         <div style="display: flex; align-items: center; justify-content: space-between;">
           <h3>Liste des tâches</h3>
           <Button icon="pi pi-file-plus" variant="text" size="small" severity="secondary" raised @click="openTaskCreationDialog"/>
         </div>
         <div class="taskLists">
-          <TaskCard v-for="[taskKey, task] in selectedTable.getTasks" :key="taskKey" :task-key="taskKey" :task="task" 
+          <TaskCard v-for="[taskKey, task] in selectedProject.getTasks" :key="taskKey" :task-key="taskKey" :task="task" 
             @edit="openTaskUpdatingDialog(taskKey, task)" 
             @remove="confirmDelete(taskKey, task)"
           />
@@ -38,7 +38,7 @@
     <div class="wrapper">
       <div class="topnav">
         <div class="tableSelector ">
-          <Select v-model="selectedTable" :options="TableList" optionLabel="name" placeholder="Selectionner le tableau" class="w-full md:w-56" />
+          <Select v-model="selectedProject" :options="projectList" optionLabel="name" placeholder="Selectionner le tableau" class="w-full md:w-56" />
         </div>
         <div class="addTable">
           <Button label="Créer projet" icon="pi pi-folder-plus" size="small" @click="openTableCreationDialog"/>
@@ -47,18 +47,18 @@
   
       <Card>
         <template #content>
-          <template v-if="selectedTable">
-            <TableView :table="selectedTable"/>
+          <template v-if="selectedProject">
+            <TableView :project="selectedProject"/>
         
             <Divider/>
-            <MPMGaph :nodes="selectedTable.getNodes" :edges="selectedTable.getEdges"/>
+            <MPMGaph :nodes="selectedProject.getNodes" :edges="selectedProject.getEdges"/>
           </template>
         </template>
       </Card>
     </div>
 
   <Dialog v-model:visible="isCreationDialogVisible" modal close-on-escape header="Création d'un nouveau tableau" :style="{ width: '40rem'}">
-    <form @submit.prevent="submitTableCreation">
+    <form @submit.prevent="submitProjectCreation">
       <div style="width: 60%;">
         <p style="flex-grow: 1; text-wrap: nowrap; margin: 0;">Nom du tableau: </p>
         <InputText style="flex-grow: 1;" v-model="initialNewTableValues.name" name="name" type="text" fluid 
@@ -131,7 +131,7 @@
 
       <div>
         <p style="margin-bottom: 0;">Tâches antérieures</p>
-        <MultiSelect v-model="selectedTask.previousTasks" :options="selectedTable?.getTaskArray(selectedTaskKey)" display="chip" filter placeholder="Selectionner" style="width: 80%;" />
+        <MultiSelect v-model="selectedTask.previousTasks" :options="selectedProject?.getTaskArray(selectedTaskKey)" display="chip" filter placeholder="Selectionner" style="width: 80%;" />
       </div>
 
       <Divider />
@@ -163,33 +163,33 @@ import { useToast } from 'primevue/usetoast';
 import { Dialog } from 'primevue';
 import Divider from 'primevue/divider';
 import Card from 'primevue/card';
-import { TableModel, type TaskModel } from '@/models/TableModel';
+import { Project, type TaskModel } from '@/models/Project';
 import TableView from '@/components/TableView.vue';
 import MPMGaph from '@/components/MPMGaph.vue';
-import { DefaultTable1, DefaultTable2, DefaultTable3 } from '@/const/DefaultTables';
+import { DefaultTable1, DefaultTable2, DefaultTable3 } from '@/const/DefaultProjects';
 import TaskCard from '@/components/TaskCard.vue';
 
 
 const toast = useToast()
 
 const isCreationDialogVisible = ref<boolean>(false)
-const TableList = ref<TableModel[]>([])
-const selectedTable = ref<TableModel>()
+const projectList = ref<Project[]>([])
+const selectedProject = ref<Project>()
 onMounted(()=>{
-  TableList.value = [
+  projectList.value = [
     DefaultTable1,
     DefaultTable2,
     DefaultTable3
   ]
 
-  selectedTable.value = TableList.value[0]
+  selectedProject.value = projectList.value[0]
 })
 
 const deleteTable = ()=>{
-  TableList.value = TableList.value.filter((table)=>{
-    return table.name != selectedTable.value?.name
+  projectList.value = projectList.value.filter((table)=>{
+    return table.name != selectedProject.value?.name
   })
-  selectedTable.value = TableList.value[0]
+  selectedProject.value = projectList.value[0]
 }
 
 
@@ -222,7 +222,7 @@ const openTaskCreationDialog = ()=>{
 }
 
 const submitTaskCreation = ()=>{
-  selectedTable.value?.addTask(newTask.value)
+  selectedProject.value?.addTask(newTask.value)
   isAddingTaskDialogVisible.value = false
 }
 
@@ -249,7 +249,7 @@ const openTaskUpdatingDialog = (key: string, task: TaskModel)=>{
 }
 
 const submitTaskUpdate = ()=>{
-  selectedTable.value?.updateTask(selectedTaskKey.value, selectedTask.value)
+  selectedProject.value?.updateTask(selectedTaskKey.value, selectedTask.value)
   isUpdatingTaskDialogVisible.value = false
 }
 
@@ -280,7 +280,7 @@ const confirmDelete = (taskKey: string, task: TaskModel)=>{
             severity: 'danger'
         },
         accept: () => {
-          let result = selectedTable.value?.deleteTask(selectedTaskKey.value)
+          let result = selectedProject.value?.deleteTask(selectedTaskKey.value)
           if(result) toast.add({ severity: 'info', summary: 'Succées', detail: 'Suppression effectuée', life: 3000 });
           else toast.add({ severity: 'error', summary: 'Echec', detail: 'Suppession échouée', life: 3000 });
         },
@@ -292,7 +292,7 @@ const confirmDelete = (taskKey: string, task: TaskModel)=>{
 
 ///////////////////////////////////////////
 ///////////////////////////////////////////
-/////////    Table creation      //////////
+/////////    Project creation      ////////
 ///////////////////////////////////////////
 ///////////////////////////////////////////
 const initialNewTableValues = reactive<{
@@ -383,7 +383,7 @@ const validateTasks = ()=>{
   return valid;
 }
 
-const submitTableCreation = ()=>{
+const submitProjectCreation = ()=>{
   if(validateName() && validateTasks()){
     isCreationDialogVisible.value = false
     let taskMap = new Map<string, TaskModel>()
@@ -398,7 +398,7 @@ const submitTableCreation = ()=>{
       })
     })
 
-    TableList.value.push(new TableModel(initialNewTableValues.name, taskMap))
+    projectList.value.push(new Project(initialNewTableValues.name, taskMap))
   }
 }
 </script>
@@ -421,7 +421,7 @@ const submitTableCreation = ()=>{
         margin: 0;
       }
 
-      .table_description{
+      .project_description{
         p{
           margin: 10px;
         }

@@ -6,7 +6,7 @@
             <div id="toolbar">
                 <div class="dropdown_button">
                     <div class="menu_item">
-                        <i class="pi pi-download"></i>
+                        <i class="pi pi-camera"></i>
 
                         <ul class="dropdown">
                             <li style="font-size: small;">Format :</li>

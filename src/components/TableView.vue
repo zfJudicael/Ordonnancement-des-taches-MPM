@@ -8,13 +8,13 @@
         </div>
 
         <div class="data"
-          v-for="[key, value] in table.getTasks"  
+          v-for="[key, value] in project.getTasks"  
         >
           <p>{{ key }}</p>
           <p>{{ value.duration }}</p>
           <p>
             <template v-if="value.previousTasks.length > 0">
-              <span v-for="prevTask in value.previousTasks">{{ `${prevTask} ` }}</span>
+              <span v-for="prevTask in value.previousTasks">{{ prevTask }}</span>
             </template>
             <span v-else>-</span>
           </p>
@@ -22,18 +22,18 @@
             <template v-if="value.nextTasks?.[0] == 'fin' ">
               <span style="font-weight: bold;">F</span>
             </template>
-            <span v-else v-for="nextTask in value.nextTasks">{{ `${nextTask} ` }}</span>
+            <span v-else v-for="nextTask in value.nextTasks">{{ nextTask }}</span>
           </p>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { TableModel } from '@/models/TableModel';
+import { Project } from '@/models/Project';
 
 defineProps({
-    table: {
-        type: TableModel,
+    project: {
+        type: Project,
         required: true
     }
 })

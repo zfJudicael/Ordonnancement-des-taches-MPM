@@ -46,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import { TableModel } from '@/models/TableModel';
+import { TableModel } from '@/models/Project';
 
 defineProps({
     table: {

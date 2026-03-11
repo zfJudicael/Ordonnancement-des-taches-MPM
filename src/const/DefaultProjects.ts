@@ -1,4 +1,4 @@
-import { TableModel, type TaskModel } from "@/models/TableModel";
+import { Project, type TaskModel } from "@/models/Project";
 
 export const Table1 = new Map<string, TaskModel>([
   ["a", { duration: 7, earlyDate: 0, lateDate: 0, isCritical: false,  previousTasks: [], nextTasks: [] }],
@@ -61,17 +61,17 @@ export const Table3 = new Map<string, TaskModel>([
     ["L", { duration: 24, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["H", "I", "J"], nextTasks: [] }],
 ])
 
-const DefaultTable1 = new TableModel(
+const DefaultTable1 = new Project(
     "Test 1",
     Table1
 )
 
-const DefaultTable2 = new TableModel(
+const DefaultTable2 = new Project(
     "Test 2",
     Table2
 )
 
-const DefaultTable3 = new TableModel(
+const DefaultTable3 = new Project(
     "Test 3",
     Table3
 )

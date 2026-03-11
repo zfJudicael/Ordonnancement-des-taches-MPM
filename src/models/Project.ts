@@ -10,13 +10,15 @@ export interface TaskModel{
     previousTasks: string[]
 }
 
-export class TableModel {
+export class Project{
     name: string;
     tasks: Map<string, TaskModel>;
     tasksInCriticalPath: string[];
     orderedTasks: string[]
     tasksDegree?: string[][]
     totalDuration: number;
+    startTasks: string[];
+    lastTasks: string[];
 
     constructor(name: string, tasks: Map<string, TaskModel>){
         this.name = name
@@ -24,6 +26,8 @@ export class TableModel {
         this.tasksInCriticalPath = []
         this.orderedTasks = []
         this.totalDuration = 0
+        this.startTasks = []
+        this.lastTasks = []
         
         this.loadAnswer()
     }
@@ -78,6 +82,10 @@ export class TableModel {
         this.totalDuration = 0
 
         this.resetData()
+        this.setNextTasks()
+        this.orderTasks()
+        this.setStart()
+        this.setEnd()
         this.orderTasks()
         this.setEarlyDate()
         this.setLateDate()
@@ -87,6 +95,8 @@ export class TableModel {
     resetData(){
         this.tasks.delete("deb")
         this.tasks.delete("fin")
+        this.startTasks = []
+        this.lastTasks = []
         this.tasks.forEach((value, key)=>{
             value.nextTasks = []
             value.earlyDate = 0
@@ -95,88 +105,89 @@ export class TableModel {
         })
     }
 
-    orderTasks(){
-        return new Promise((resolve, reject)=>{
-            this.tasks.delete("deb")
-            this.tasks.delete("fin")
-            const inDegree = new Map();
-            const graph: Map<string, string[]> = new Map();
-        
-            this.tasks.forEach((_task, key) => {
-                _task.previousTasks = _task.previousTasks.sort();
-                inDegree.set(key, 0);
-                graph.set(key, []);
-            });
-        
-            this.tasks.forEach((_, key) => {
-            this.tasks.get(key)?.previousTasks.forEach((prevTask) => {
-                const _task = this.tasks.get(prevTask);
-                if (_task) {
-                if (!_task.nextTasks.includes(key)) {
-                    _task.nextTasks.push(key);
-                    _task.nextTasks = _task.nextTasks.sort();
-                }
-                graph.get(prevTask)?.push(key);
-                inDegree.set(key, inDegree.get(key) + 1);
-                }
-            });
-            });
-        
-            const tasksDegree: string[][] = [];
-            let zeroDegreTask: string[] = [];
-            const inDegreeCopy = new Map(inDegree);
-            const graphCopy: Map<string, string[]> = new Map(graph);
-        
-            const queue: string[] = [];
-            const orderedTasks: string[] = [];
-            inDegree.forEach((deg, task) => {
-            if (deg === 0) queue.push(task);
-            });
-        
-            zeroDegreTask = Array.from(queue);
-        
-            while (queue.length > 0) {
-            const current: string = queue.shift() as string;
-            orderedTasks.push(current);
-        
-            graph.get(current)?.forEach((nextTask) => {
-                inDegree.set(nextTask, inDegree.get(nextTask) - 1);
-                if (inDegree.get(nextTask) === 0) queue.push(nextTask);
-            });
+    setNextTasks(){
+        this.tasks.forEach((_task, _taskKey)=>{
+            if(_task.previousTasks.length == 0){
+                 this.startTasks.push(_taskKey)
+            }else{
+                _task.previousTasks.forEach((_previousTaskKey)=>{
+                    this.tasks.get(_previousTaskKey)?.nextTasks.push(_taskKey)
+                })
             }
-        
-            while (zeroDegreTask.length > 0) {
-            tasksDegree.push(zeroDegreTask);
-            const nextTasks: string[] = [];
-            zeroDegreTask.forEach((current) => {
-                graphCopy.get(current)?.forEach((nextTask) => {
-                inDegreeCopy.set(nextTask, inDegreeCopy.get(nextTask) - 1);
-                if (inDegreeCopy.get(nextTask) === 0) nextTasks.push(nextTask);
-                });
-            });
-            zeroDegreTask = nextTasks;
-            }
-        
-            if (orderedTasks.length !== this.tasks.size) {
-                console.log("Impossible d'ordonner les tâches : dépendances circulaires détectées.");
-                reject()
-            } else {
-                this.orderedTasks = orderedTasks
-                this.tasksDegree = tasksDegree
-            };
+            
+            let isIncluded = false;
+            isIncluded = Array.from(this.tasks.values()).some((value)=>{
+                return value.previousTasks.includes(_taskKey)
+            })
     
-            this.tasks.set("deb", {duration: 0, earlyDate: 0, lateDate: 0, isCritical: true, nextTasks: tasksDegree[0], previousTasks: []})
-            this.tasks.set("fin", {duration: 0, earlyDate: 0, lateDate: 0, isCritical: true, nextTasks: [], previousTasks: []})
+            if(!isIncluded){ 
+                _task.nextTasks = ["fin"]
+                this.lastTasks.push(_taskKey)
+            }
+        })
+    }
 
-            this.removeOneTaskFromTasksList("fin").forEach((val, k)=>{
-                if(!val.nextTasks.length){
-                    val.nextTasks.push("fin")
-                    this.tasks.get("fin")?.previousTasks.push(k)
+    orderTasks() {
+        const ordered: string[] = []
+        const inDegree = new Map<string, number>()
+
+        // calcul du nombre de prédécesseurs
+        this.tasks.forEach((task, key) => {
+            inDegree.set(key, task.previousTasks.length)
+        })
+
+        const queue: string[] = []
+
+        // tâches sans prédécesseur
+        inDegree.forEach((count, key) => {
+            if (count === 0) {
+                queue.push(key)
+            }
+        })
+
+        while (queue.length > 0) {
+            const current = queue.shift()!
+            ordered.push(current)
+
+            const task = this.tasks.get(current)
+
+            task?.nextTasks.forEach(nextKey => {
+                const newDegree = (inDegree.get(nextKey) ?? 0) - 1
+                inDegree.set(nextKey, newDegree)
+
+                if (newDegree === 0) {
+                    queue.push(nextKey)
                 }
             })
-            
-            resolve(1)
-        })
+        }
+
+        this.orderedTasks = ordered
+    }
+
+    setStart(){
+        this.tasks.set("deb", 
+            {   
+                duration: 0, 
+                earlyDate: 0, 
+                lateDate: 0, 
+                isCritical: true, 
+                nextTasks: this.startTasks, 
+                previousTasks: []
+            }
+        )
+    }
+
+    setEnd(){
+        this.tasks.set("fin", 
+            {
+                duration: 0, 
+                earlyDate: 0, 
+                lateDate: 0, 
+                isCritical: true, 
+                nextTasks: [], 
+                previousTasks: this.lastTasks
+            }
+        )
     }
 
     setEarlyDate(){
@@ -236,15 +247,6 @@ export class TableModel {
             }
         })
     }
-
-    removeOneTaskFromTasksList(removedTaskKey: string){
-        const newTasksList = new Map<string, TaskModel>()
-        this.tasks.forEach((value, key)=>{
-            if(key != removedTaskKey) newTasksList.set(key, value)
-        })
-
-        return newTasksList
-    }
     
     public get getTasks(){
         let taskList = new Map<string, TaskModel>()
@@ -274,7 +276,7 @@ export class TableModel {
             taskList.set(val, this.tasks.get(val) as TaskModel)
         })
 
-        return taskList;
+        return this.orderedTasks;
     }
     
     public get getNodes(){

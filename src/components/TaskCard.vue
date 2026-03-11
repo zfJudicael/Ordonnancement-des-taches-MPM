@@ -24,7 +24,7 @@
 import { Card } from 'primevue';
 import Chip from 'primevue/chip';
 import Button from 'primevue/button';
-import type { TaskModel } from '@/models/TableModel';
+import type { TaskModel } from '@/models/Project';
 
 defineProps<{
     taskKey: string,
