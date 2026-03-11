@@ -1,26 +1,31 @@
 <template>
   <div class="home">
     <div class="navigation">
-      <h3 class="title">Ordonnancement des tâches</h3>
-      <Divider />
+      <div class="sticky_header">
+        <h3 class="title">Ordonnancement des tâches</h3>
+        <Divider />
 
-      <template v-if="selectedTable">
-        <div class="table_description">
+        <div v-if="selectedTable" class="table_description">
           <p>Nom du projet : {{ selectedTable.name }}</p>
           <p>Nombre de tâches : {{ selectedTable.getTasks.size }}</p>
           <p>Durée totale: {{ selectedTable.totalDuration }}</p>
-
-          <div style="display: flex; justify-content: end; gap: 5px;">
-            <Button icon="pi pi-file-plus" severity="secondary" raised label="Ajouter tâche" @click="openTaskCreationDialog"/>
-            <Button icon="pi pi-trash" severity="danger" raised label="Supprimer" @click="deleteTable"
-              v-if="!['Test 1', 'Test 2', 'Test 3'].includes(selectedTable.name)"
-            />
-          </div>
+  
+            <div style="display: flex; justify-content: end; gap: 5px;">
+              <Button icon="pi pi-trash" severity="danger" raised size="small" label="Supprimer" @click="deleteTable"
+                v-if="!['Test 1', 'Test 2', 'Test 3'].includes(selectedTable.name)"
+              />
+            </div>
         </div>
-        
+
         <Divider />
 
-        <h3>Liste des tâches</h3>
+      </div>
+
+      <template v-if="selectedTable">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <h3>Liste des tâches</h3>
+          <Button icon="pi pi-file-plus" variant="text" size="small" severity="secondary" raised @click="openTaskCreationDialog"/>
+        </div>
         <div class="taskLists">
           <TaskCard v-for="[taskKey, task] in selectedTable.getTasks" :key="taskKey" :task-key="taskKey" :task="task" 
             @edit="openTaskUpdatingDialog(taskKey, task)" 
@@ -36,7 +41,7 @@
           <Select v-model="selectedTable" :options="TableList" optionLabel="name" placeholder="Selectionner le tableau" class="w-full md:w-56" />
         </div>
         <div class="addTable">
-          <Button label="Créer tableau" icon="pi pi-file-plus" @click="openTableCreationDialog"/>
+          <Button label="Créer projet" icon="pi pi-folder-plus" size="small" @click="openTableCreationDialog"/>
         </div>
       </div>
   
@@ -110,7 +115,7 @@
 
       <Divider />
 
-      <div style="display: flex; gap: 5px; justify-content: center;">
+      <div style="display: flex; gap: 5px; justify-content: end;">
         <Button type="submit" icon="pi pi-check" severity="info" raised label="Confirmer"/>
         <Button icon="pi pi-times" severity="danger" @click="isAddingTaskDialogVisible = false" raised label="Annuler"/>
       </div>
@@ -131,7 +136,7 @@
 
       <Divider />
 
-      <div style="display: flex; gap: 5px; justify-content: center;">
+      <div style="display: flex; gap: 5px; justify-content: end;">
         <Button type="submit" icon="pi pi-check" severity="info" raised label="Confirmer"/>
         <Button icon="pi pi-times" severity="danger" @click="isUpdatingTaskDialogVisible = false" raised label="Annuler"/>
       </div>
@@ -403,15 +408,24 @@ const submitTableCreation = ()=>{
   .navigation{
     padding: 0 15px 15px 15px;
 
-    .title{
-      font-size: 1.2rem;
-      text-align: center;
+    .sticky_header{
       position: sticky;
       top: 0;
       z-index: 3;
-      padding: 20px;
-      margin: 0;
       background-color: #f8fafc;
+
+      .title{
+        font-size: 1.2rem;
+        text-align: center;
+        padding: 20px;
+        margin: 0;
+      }
+
+      .table_description{
+        p{
+          margin: 10px;
+        }
+      }
     }
 
     .taskLists{
@@ -448,7 +462,8 @@ const submitTableCreation = ()=>{
     .navigation{
       width: 24%;
       padding: 0 15px 15px 15px;
-      overflow-y: scroll;
+      display: flex;
+      flex-direction: column;
 
       .title{
         font-size: 1.2rem;
@@ -463,6 +478,7 @@ const submitTableCreation = ()=>{
 
       .taskLists{
         display: block;
+        overflow-y: scroll;
       }
     }
 

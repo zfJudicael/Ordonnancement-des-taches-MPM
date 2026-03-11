@@ -37,23 +37,32 @@ defineEmits(['edit', 'remove'])
 <style lang="scss">
 .taskCard{
   margin-bottom: 5px;
+  p{
+    margin: 8px;
+  }
 
   .header{
-    display: flex; justify-content: space-between; align-items: center;
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
 
     .key{
-      margin: 0; font-weight: bold; font-size: larger;
+      margin: 0; 
+      font-weight: bold; 
+      font-size: larger;
     }
 
     .action{
-      display: flex; justify-content: end; gap: 4px;
+      display: flex; 
+      justify-content: end; 
+      gap: 4px;
     }
   }
 
   .previousTask_container{
-    display: flex; flex-wrap: wrap; gap: 5px;
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 5px;
   }
-
-
 }
 </style>
