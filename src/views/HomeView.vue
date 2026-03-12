@@ -11,8 +11,12 @@
         </p>
         
         <div class="buttons">
-          <button>Commencer un projet</button>
-          <button>Voir exemple</button>
+          <Button aria-label="Commencer un projet" style="gap: 40px;">
+            <span>Commencer un projet</span>
+            <i class="pi pi-arrow-right"></i>
+          </Button>
+        
+          <Button label="Voir exemple" severity="secondary" variant="text" raised/>
         </div>
       </div>
 
@@ -22,33 +26,48 @@
     </section>
 
 
-    <section class="features">
-      <h2>Les fonctionnalités?</h2>
-      <div class="feature">
-        <h3>Créer vos tâches</h3>
-        <p>Ajoutez les tâches de votre projet et définissez leurs dépendances.</p>
-      </div>
+    <section class="features_section">
+      <h2>Fonctionnalités</h2>
+      <p>Tous les outils dont vous avez besoin pour gérer vos projets efficacement</p>
 
-      <div class="feature">
-        <h3>Visualiser le diagramme</h3>
-        <p>Votre projet est automatiquement transformé en diagramme clair.</p>
-      </div>
+      <div class="features">
+        <div class="feature">
+          <i class="pi pi-sitemap" style="font-size: 2.5rem"></i>
+          <h3>Graphe MPM</h3>
+          <p>Visualisez votre projet sous forme de graphe grâce à la méthode des potentiels Métra.</p>
+        </div>
 
-      <div class="feature">
-        <h3>Identifier le chemin critique</h3>
-        <p>Repérez les tâches essentielles qui déterminent la durée du projet.</p>
-      </div>
+        
+        <div class="feature">
+          <i class="pi pi-bolt" style="font-size: 2.5rem"></i>
+          <h3>Chemin critique</h3>
+          <p>Identifiez automatiquement le chemin critique de votre projet pour mieux repérer les tâches essentielles qui déterminent la durée de votre projet.</p>
+        </div>
+        
+        <div class="feature">
+          <i class="pi pi-list" style="font-size: 2.5rem"></i>
+          <h3>Gestion des tâches</h3>
+          <p>Gérez facilement vos tâches, leurs durées et leurs dépendances dans une interface intuitive.</p>
+        </div>
 
-      <div class="feature">
-        <h3>Exporter votre diagramme</h3>
-        <p>Téléchargez votre planification en image.</p>
+        <div class="feature">
+          <i class="pi pi-calendar-clock" style="font-size: 2.5rem"></i>
+          <h3>Marge des tâches</h3>
+          <p>Réperez les tâches qui peuvent être retardées sans impacter la fin du projet.</p>
+        </div>
+  
+        <div class="feature">
+          <i class="pi pi-download" style="font-size: 2.5rem"></i>
+          <h3>Exportat du diagramme</h3>
+          <p>Téléchargez votre diagramme  pour le partager facilement.</p>
+        </div>
       </div>
-
     </section>
   </div>
 </template>
 
 <script setup lang="ts">
+import { Button } from 'primevue';
 </script>
 
 <style lang="scss">
@@ -63,10 +82,14 @@
     grid-template-columns: repeat(2, 1fr);
 
     .text{
-      padding: 20px 40px;
+      padding: 0 10% 40px 0;
       display: flex;
       justify-content: center;
       flex-direction: column;
+
+      p{
+        line-height: 1.5;
+      }
 
       .buttons{
         display: flex;
@@ -86,15 +109,23 @@
 
   .features{
     display: grid;
-    gap: 40px;
-    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    grid-template-columns: repeat(3, 1fr);
 
     .feature{
       padding: 30px;
-      border: 0.5px solid gray;
+      border: 1px solid rgba(0,0,0,0.1);
+      background-color: white;
+      border-radius: 10px;
 
       h3{
-        margin: 0;
+        margin: 15px 0;
+      }
+
+      p{
+        color: rgb(97, 97, 97);
+        font-size:medium;
+        line-height: 1.5;
       }
     }
   }
