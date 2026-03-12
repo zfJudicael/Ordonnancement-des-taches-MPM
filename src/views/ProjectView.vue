@@ -405,6 +405,7 @@ const submitProjectCreation = ()=>{
 
 <style scoped lang="scss">
 .project_view{
+    background-color: #f8fafc;
   .navigation{
     padding: 0 15px 15px 15px;
 

@@ -1,3 +1,3 @@
 <template>
-  <RouterView style="background-color: #f8fafc;"/>
+  <RouterView/>
 </template>
