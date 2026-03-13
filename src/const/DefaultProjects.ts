@@ -62,17 +62,17 @@ export const Table3 = new Map<string, TaskModel>([
 ])
 
 const DefaultTable1 = new Project(
-    "Test 1",
+    "Exemple01",
     Table1
 )
 
 const DefaultTable2 = new Project(
-    "Test 2",
+    "Exemple02",
     Table2
 )
 
 const DefaultTable3 = new Project(
-    "Test 3",
+    "Exemple03",
     Table3
 )
 

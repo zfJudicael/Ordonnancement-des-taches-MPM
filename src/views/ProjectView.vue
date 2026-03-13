@@ -168,6 +168,7 @@ import TableView from '@/components/TableView.vue';
 import MPMGaph from '@/components/MPMGaph.vue';
 import { DefaultTable1, DefaultTable2, DefaultTable3 } from '@/const/DefaultProjects';
 import TaskCard from '@/components/TaskCard.vue';
+import { useRoute } from 'vue-router';
 
 
 const toast = useToast()
@@ -175,14 +176,30 @@ const toast = useToast()
 const isCreationDialogVisible = ref<boolean>(false)
 const projectList = ref<Project[]>([])
 const selectedProject = ref<Project>()
-onMounted(()=>{
-  projectList.value = [
-    DefaultTable1,
-    DefaultTable2,
-    DefaultTable3
-  ]
 
-  selectedProject.value = projectList.value[0]
+const route = useRoute()
+const isExample = ref<boolean>(true)
+
+onMounted(()=>{
+  let exampleQuery = route.query.isExample?.toString();
+  if(exampleQuery){
+    let val = parseInt(exampleQuery)
+
+    if(isNaN(val)) isExample.value = true
+
+    if(val == 0) isExample.value = false
+    else isExample.value = true
+  }
+
+  if(isExample.value){
+
+    console.log("Exempleee")
+    projectList.value = [DefaultTable1]
+    selectedProject.value = projectList.value[0]
+
+  }else{
+    console.log("Noon")
+  }
 })
 
 const deleteTable = ()=>{
