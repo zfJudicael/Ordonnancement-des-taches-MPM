@@ -11,7 +11,7 @@
         </p>
         
         <div class="buttons">
-          <Button aria-label="Commencer un projet" style="gap: 40px;">
+          <Button aria-label="Commencer un projet" class="start" raised>
             <span>Commencer un projet</span>
             <i class="pi pi-arrow-right"></i>
           </Button>
@@ -32,32 +32,32 @@
 
       <div class="features">
         <div class="feature">
-          <i class="pi pi-sitemap" style="font-size: 2.5rem"></i>
+          <i class="pi pi-sitemap"></i>
           <h3>Graphe MPM</h3>
           <p>Visualisez votre projet sous forme de graphe grâce à la méthode des potentiels Métra.</p>
         </div>
 
         
         <div class="feature">
-          <i class="pi pi-bolt" style="font-size: 2.5rem"></i>
+          <i class="pi pi-bolt"></i>
           <h3>Chemin critique</h3>
           <p>Identifiez automatiquement le chemin critique de votre projet pour mieux repérer les tâches essentielles qui déterminent la durée de votre projet.</p>
         </div>
         
         <div class="feature">
-          <i class="pi pi-list" style="font-size: 2.5rem"></i>
+          <i class="pi pi-list"></i>
           <h3>Gestion des tâches</h3>
           <p>Gérez facilement vos tâches, leurs durées et leurs dépendances dans une interface intuitive.</p>
         </div>
 
         <div class="feature">
-          <i class="pi pi-calendar-clock" style="font-size: 2.5rem"></i>
+          <i class="pi pi-calendar-clock"></i>
           <h3>Marge des tâches</h3>
           <p>Réperez les tâches qui peuvent être retardées sans impacter la fin du projet.</p>
         </div>
   
         <div class="feature">
-          <i class="pi pi-download" style="font-size: 2.5rem"></i>
+          <i class="pi pi-download"></i>
           <h3>Exportat du diagramme</h3>
           <p>Téléchargez votre diagramme  pour le partager facilement.</p>
         </div>
@@ -74,19 +74,17 @@ import { Button } from 'primevue';
 .home_view{
   background-color: #f8fafc;
   min-height: 100vh;
-  padding: 40px;
+  padding: 20px;
 
   .hero{
     height: 100vh;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 30px;
 
+    
     .text{
-      padding: 0 10% 40px 0;
-      display: flex;
-      justify-content: center;
-      flex-direction: column;
-
       p{
         line-height: 1.5;
       }
@@ -100,26 +98,32 @@ import { Button } from 'primevue';
     .image{
       display: flex;
       align-items: center;
+
       img{
         width: 100%;
-        // height: initial;
       }
     }
   }
 
   .features{
     display: grid;
-    gap: 20px;
-    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
 
     .feature{
-      padding: 30px;
+      padding: 10px;
       border: 1px solid rgba(0,0,0,0.1);
       background-color: white;
       border-radius: 10px;
+      transition: all 0.5s;
+
+      i{
+        transition: all 0.5s;
+        font-size: 2rem;
+      }
 
       h3{
         margin: 15px 0;
+        transition: all 0.5s;
       }
 
       p{
@@ -127,7 +131,78 @@ import { Button } from 'primevue';
         font-size:medium;
         line-height: 1.5;
       }
+
+      &:hover{
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+        i{
+          color: blue;
+        }
+      }
     }
   }
+}
+
+@media (min-width: 768px) {
+  .home_view{
+    padding: 40px;
+
+      .hero{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        padding: 0;
+
+        .text{
+          padding: 0 10% 40px 0;
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+
+          p{
+            line-height: 1.5;
+          }
+
+          .buttons{
+            display: flex;
+            gap: 6px;
+
+            .start{
+              gap: 40px;
+            }
+          }
+        }
+
+        .image{
+          display: flex;
+          align-items: center;
+          img{
+            width: 100%;
+            height: initial;
+          }
+        }
+      }
+
+      .features{
+        display: grid;
+        gap: 20px;
+        grid-template-columns: repeat(3, 1fr);
+
+        .feature{
+          padding: 30px;
+
+          i{
+            font-size: 2.5rem;
+          }
+
+          h3{
+            margin: 15px 0;
+          }
+
+          p{
+            line-height: 1.5;
+          }
+        }
+      }
+    }
 }
 </style>

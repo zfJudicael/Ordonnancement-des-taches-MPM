@@ -38,7 +38,7 @@ defineEmits(['edit', 'remove'])
 .taskCard{
   margin-bottom: 5px;
   p{
-    margin: 8px;
+    margin: 8px 0;
   }
 
   .header{
