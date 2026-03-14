@@ -12,7 +12,7 @@
             <p>Durée totale: {{ selectedProject.totalDuration }}</p>
     
               <div style="display: flex; justify-content: end; gap: 5px;">
-                <Button icon="pi pi-trash" severity="danger" raised size="small" label="Supprimer" @click="deleteTable"/>
+                <Button icon="pi pi-trash" severity="danger" raised size="small" label="Supprimer" @click="confirmProjectDelete"/>
               </div>
           </div>
           <Divider />
@@ -27,7 +27,7 @@
         <div class="taskLists">
           <TaskCard v-for="[taskKey, task] in selectedProject.getTasks" :key="taskKey" :task-key="taskKey" :task="task" 
             @edit="openTaskUpdatingDialog(taskKey, task)" 
-            @remove="confirmDelete(taskKey, task)"
+            @remove="confirmTaskDelete(taskKey, task)"
           />
         </div>
       </template>
@@ -206,13 +206,6 @@ onMounted(()=>{
   }
 })
 
-const deleteTable = ()=>{
-  projectList.value = projectList.value.filter((table)=>{
-    return table.name != selectedProject.value?.name
-  })
-  selectedProject.value = projectList.value[0]
-}
-
 
 ///////////////////////////////////////////
 ///////////////////////////////////////////
@@ -282,7 +275,7 @@ const submitTaskUpdate = ()=>{
 
 const confirm = useConfirm()
 
-const confirmDelete = (taskKey: string, task: TaskModel)=>{
+const confirmTaskDelete = (taskKey: string, task: TaskModel)=>{
   selectedTaskKey.value = taskKey
   selectedTask.value = task
 
@@ -340,6 +333,34 @@ const initTableCreation = ()=>{
   tasksErrorMessage.value = []
   initialNewTableValues.name = ''
   initialNewTableValues.tasks = []
+}
+
+const confirmProjectDelete = ()=>{
+  confirm.require({
+    message: `Voulez vous vraiment supprimer ce projet "${selectedProject.value?.name}"?`,
+        header: 'Suppression',
+        icon: 'pi pi-info-circle',
+        rejectLabel: 'Annuler',
+        rejectProps: {
+            label: 'Annuler',
+            severity: 'secondary',
+            outlined: true
+        },
+        acceptProps: {
+            label: 'Supprimer',
+            severity: 'danger'
+        },
+        accept: () => {
+          projectList.value = projectList.value.filter((table)=>{
+            return table.name != selectedProject.value?.name
+          })
+          selectedProject.value = projectList.value[0]
+          toast.add({ severity: 'info', summary: 'Succées', detail: 'Suppression effectuée', life: 3000 });
+        },
+        reject: () => {
+            toast.add({ severity: 'warn', summary: 'Rejeté', detail: 'Vous avez rejeté la supppression', life: 3000 });
+        }
+  })
 }
 
 const addEmptyTask = ()=>{
