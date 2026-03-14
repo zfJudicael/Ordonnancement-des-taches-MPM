@@ -2,7 +2,7 @@
   <div class="project_view">
     <div class="navigation">
       <div class="sticky_header">
-        <h3 class="title">Ordonnancement des tâches</h3>
+        <h3 class="title" @click="$router.push({name: 'home'})">Ordonnancement des tâches</h3>
         <Divider />
 
         <template v-if="selectedProject">
@@ -441,6 +441,7 @@ const submitProjectCreation = ()=>{
         text-align: center;
         padding: 20px;
         margin: 0;
+        cursor: default;
       }
 
       .project_description{
