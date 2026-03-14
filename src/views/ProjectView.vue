@@ -60,49 +60,11 @@
       </div>
     </div>
 
-  <Dialog v-model:visible="isCreationDialogVisible" modal close-on-escape header="Création d'un nouveau tableau" :style="{ width: '40rem'}">
-    <form @submit.prevent="submitProjectCreation">
-      <div style="width: 60%;">
-        <p style="flex-grow: 1; text-wrap: nowrap; margin: 0;">Nom du tableau: </p>
-        <InputText style="flex-grow: 1;" v-model="initialNewTableValues.name" name="name" type="text" fluid 
-        :invalid="nameErrorMessage.length > 0"
-        />
-        <Message severity="error" variant="simple" size="small">{{ nameErrorMessage }}</Message>
-      </div>
-
-      <div v-if="initialNewTableValues.tasks.length>0">
-        <p style="margin-bottom: 0;">{{ 
-          (initialNewTableValues.tasks.length > 1)? "Tâches" : "Tâche"
-          }}</p>
-        <div v-for="(task, index) in initialNewTableValues.tasks" style="display: flex; gap: 5px; align-items:first baseline;">
-          <i class="pi pi-angle-right"></i>
-          <div>
-            <InputText style="flex-grow: 1;" v-model="task.name" name="task" type="text" placeholder="Nom" fluid
-             :invalid="tasksErrorMessage[index].name.length > 0"/>
-            <Message severity="error" variant="simple" size="small">{{ tasksErrorMessage[index].name }}</Message>
-          </div>
-          <div>
-            <InputNumber v-model="task.duration" name="duration" placeholder="Durée" fluid :invalid="tasksErrorMessage[index].duration.length > 0"/>
-            <Message severity="error" variant="simple" size="small">{{ tasksErrorMessage[index].duration }}</Message>
-          </div>
-          <Button icon="pi pi-trash" variant="text" severity="danger" raised rounded aria-label="Delete" size="small" 
-            @click="removeTask(index)"  
-          />
-        </div>
-      </div>
-
-      <Message severity="error" variant="simple" size="small" style="margin-top: 10px;">{{ taskError }}</Message>
-      <Divider />
-      <div style="display: flex; justify-content: space-between;">
-        <Button icon="pi pi-file-plus" raised label="Ajouter tâche" @click="addEmptyTask"/>
-
-        <div style="display: flex; gap: 2px;">
-          <Button type="submit" icon="pi pi-check" severity="info" raised label="Confirmer"/>
-          <Button icon="pi pi-times" severity="danger" @click="isCreationDialogVisible = false" raised label="Annuler"/>
-        </div>
-      </div>
-    </form>
-  </Dialog>
+  <CreateNewProjectDialog 
+    v-model:isVisible="isCreationDialogVisible" 
+    v-model:new-project="initialNewTableValues" 
+    @submit="createNewProject"
+  />
 
   <Dialog v-model:visible="isAddingTaskDialogVisible" modal close-on-escape header="Ajout d'une nouvelle tâche" :style="{ width: '30rem' }">
     <form @submit.prevent="submitTaskCreation">
@@ -155,7 +117,6 @@
 import { onMounted, reactive, ref } from 'vue'
 import InputText from 'primevue/inputtext';
 import InputNumber from 'primevue/inputnumber';
-import Message from 'primevue/message';
 import Button from 'primevue/button';
 import Select from 'primevue/select';
 import Toast from 'primevue/toast';
@@ -174,10 +135,10 @@ import TaskCard from '@/components/TaskCard.vue';
 import { useRoute } from 'vue-router';
 import { DotLottieVue } from '@lottiefiles/dotlottie-vue';
 import { LottiesURL } from '@/const/lottiesURL';
+import CreateNewProjectDialog from '@/components/dialogs/CreateNewProjectDialog.vue';
 
 const toast = useToast()
 
-const isCreationDialogVisible = ref<boolean>(false)
 const projectList = ref<Project[]>([])
 const selectedProject = ref<Project>()
 
@@ -309,6 +270,8 @@ const confirmTaskDelete = (taskKey: string, task: TaskModel)=>{
 /////////    Project creation      ////////
 ///////////////////////////////////////////
 ///////////////////////////////////////////
+const isCreationDialogVisible = ref<boolean>(false)
+
 const initialNewTableValues = reactive<{
   name: string,
   tasks: TaskModel[]
@@ -319,22 +282,38 @@ const initialNewTableValues = reactive<{
 const openTableCreationDialog = ()=>{
   isCreationDialogVisible.value = true
   initTableCreation()
+  console.log(isCreationDialogVisible.value)
 }
 
-const nameErrorMessage = ref('')
-const taskError = ref('')
-const tasksErrorMessage = ref<{
-  name:string,
-  duration: string
-}[]>([])
 const initTableCreation = ()=>{
-  nameErrorMessage.value = ''
-  taskError.value = ''
-  tasksErrorMessage.value = []
   initialNewTableValues.name = ''
   initialNewTableValues.tasks = []
 }
 
+const createNewProject = ()=>{
+  isCreationDialogVisible.value = false
+  let taskMap = new Map<string, TaskModel>()
+  initialNewTableValues.tasks.forEach((task)=>{
+    if(task.name) taskMap.set(task.name, {
+      duration: task.duration,
+      lateDate: task.lateDate,
+      earlyDate: task.earlyDate,
+      isCritical: false,
+      previousTasks: task.previousTasks,
+      nextTasks: task.nextTasks
+    })
+  })
+
+  projectList.value.push(new Project(initialNewTableValues.name, taskMap))
+
+  toast.add({ severity: 'info', summary: 'Succées', detail: 'Votre projet est créé avec succès.', life: 3000 });
+}
+
+///////////////////////////////////////////
+///////////////////////////////////////////
+/////////    Delete Project      //////////
+///////////////////////////////////////////
+///////////////////////////////////////////
 const confirmProjectDelete = ()=>{
   confirm.require({
     message: `Voulez vous vraiment supprimer ce projet "${selectedProject.value?.name}"?`,
@@ -361,87 +340,6 @@ const confirmProjectDelete = ()=>{
             toast.add({ severity: 'warn', summary: 'Rejeté', detail: 'Vous avez rejeté la supppression', life: 3000 });
         }
   })
-}
-
-const addEmptyTask = ()=>{
-  initialNewTableValues.tasks.push({
-    name: '',
-    duration: 0,
-    lateDate: 0,
-    earlyDate: 0,
-    isCritical: false,
-    previousTasks: [],
-    nextTasks: []
-  })
-  taskError.value = ''
-  tasksErrorMessage.value.push({
-    name: '',
-    duration: ''
-  })
-}
-
-const removeTask = (index: number)=>{
-  initialNewTableValues.tasks.splice(index, 1)
-  tasksErrorMessage.value.splice(index, 1)
-}
-
-
-const validateName = ()=>{
-  if(initialNewTableValues.name.length > 0){
-    nameErrorMessage.value = ''
-  }else{
-    nameErrorMessage.value = 'Veuillez remplir le nom du tableau'
-  }
-  
-  return (initialNewTableValues.name.length > 0);
-}
-
-const validateTasks = ()=>{
-  let valid = true;
-
-  if(initialNewTableValues.tasks.length > 0){
-    taskError.value = ''
-
-    for(let i=0; i < initialNewTableValues.tasks.length; i++){
-      if(initialNewTableValues.tasks[i].name!.length > 0){
-        tasksErrorMessage.value[i].name = ''
-      }else{
-        tasksErrorMessage.value[i].name = 'Champ requis'
-        valid = false
-      }
-
-      if(initialNewTableValues.tasks[i].duration == undefined){
-        tasksErrorMessage.value[i].duration = 'Champ requis'
-        valid = false
-      }else{
-        tasksErrorMessage.value[i].duration = ''
-      }
-    }
-  }else{
-    taskError.value = 'Veuillez ajouter au moins une tâche'
-    valid = false
-  }
-
-  return valid;
-}
-
-const submitProjectCreation = ()=>{
-  if(validateName() && validateTasks()){
-    isCreationDialogVisible.value = false
-    let taskMap = new Map<string, TaskModel>()
-    initialNewTableValues.tasks.forEach((task)=>{
-      if(task.name) taskMap.set(task.name, {
-        duration: task.duration,
-        lateDate: task.lateDate,
-        earlyDate: task.earlyDate,
-        isCritical: false,
-        previousTasks: task.previousTasks,
-        nextTasks: task.nextTasks
-      })
-    })
-
-    projectList.value.push(new Project(initialNewTableValues.name, taskMap))
-  }
 }
 </script>
 
