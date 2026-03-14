@@ -5,20 +5,18 @@
         <h3 class="title">Ordonnancement des tâches</h3>
         <Divider />
 
-        <div v-if="selectedProject" class="project_description">
-          <p>Nom du projet : {{ selectedProject.name }}</p>
-          <p>Nombre de tâches : {{ selectedProject.getTasks.size }}</p>
-          <p>Durée totale: {{ selectedProject.totalDuration }}</p>
-  
-            <div style="display: flex; justify-content: end; gap: 5px;">
-              <Button icon="pi pi-trash" severity="danger" raised size="small" label="Supprimer" @click="deleteTable"
-                v-if="!['Test 1', 'Test 2', 'Test 3'].includes(selectedProject.name)"
-              />
-            </div>
-        </div>
-
-        <Divider />
-
+        <template v-if="selectedProject">
+          <div class="project_description">
+            <p>Nom du projet : {{ selectedProject.name }}</p>
+            <p>Nombre de tâches : {{ selectedProject.getTasks.size }}</p>
+            <p>Durée totale: {{ selectedProject.totalDuration }}</p>
+    
+              <div style="display: flex; justify-content: end; gap: 5px;">
+                <Button icon="pi pi-trash" severity="danger" raised size="small" label="Supprimer" @click="deleteTable"/>
+              </div>
+          </div>
+          <Divider />
+        </template>
       </div>
 
       <template v-if="selectedProject">
@@ -33,28 +31,33 @@
           />
         </div>
       </template>
+
+      <div v-if="!selectedProject" class="empty_task"></div>
     </div>
 
     <div class="wrapper">
       <div class="topnav">
         <div class="tableSelector ">
-          <Select v-model="selectedProject" :options="projectList" optionLabel="name" placeholder="Selectionner le tableau" class="w-full md:w-56" />
+          <Select v-model="selectedProject" :options="projectList" optionLabel="name" placeholder="Selection de projet" class="w-full md:w-56" />
         </div>
         <div class="addTable">
           <Button label="Créer projet" icon="pi pi-folder-plus" size="small" @click="openTableCreationDialog"/>
         </div>
       </div>
   
-      <Card>
+      <Card v-if="selectedProject" style="margin-top: 10px;">
         <template #content>
-          <template v-if="selectedProject">
-            <TableView :project="selectedProject"/>
-        
-            <Divider/>
-            <MPMGaph :nodes="selectedProject.getNodes" :edges="selectedProject.getEdges"/>
-          </template>
+          <TableView :project="selectedProject"/>
+      
+          <Divider/>
+          <MPMGaph :nodes="selectedProject.getNodes" :edges="selectedProject.getEdges"/>
         </template>
       </Card>
+
+      <div v-else class="no_project">
+          <DotLottieVue class="dotLottie" autoplay loop :src="LottiesURL.empty" />
+          <p>Aucun projet trouvé, veuillez en créer.</p>
+      </div>
     </div>
 
   <Dialog v-model:visible="isCreationDialogVisible" modal close-on-escape header="Création d'un nouveau tableau" :style="{ width: '40rem'}">
@@ -166,10 +169,11 @@ import Card from 'primevue/card';
 import { Project, type TaskModel } from '@/models/Project';
 import TableView from '@/components/TableView.vue';
 import MPMGaph from '@/components/MPMGaph.vue';
-import { DefaultTable1, DefaultTable2, DefaultTable3 } from '@/const/DefaultProjects';
+import { DefaultTable1 } from '@/const/DefaultProjects';
 import TaskCard from '@/components/TaskCard.vue';
 import { useRoute } from 'vue-router';
-
+import { DotLottieVue } from '@lottiefiles/dotlottie-vue';
+import { LottiesURL } from '@/const/lottiesURL';
 
 const toast = useToast()
 
@@ -451,9 +455,14 @@ const submitProjectCreation = ()=>{
       gap: 5px;
       grid-template-columns: repeat(2, 1fr);
     }
+
+    .empty_task{
+      display: none;
+    }
   }
 
   .wrapper{
+    min-height: 100vh;
 
     .topnav{
       display: grid; 
@@ -468,6 +477,22 @@ const submitProjectCreation = ()=>{
         justify-content: end;
       }
     }
+
+     .no_project{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding-top: 40px;
+        
+        .dotLottie{
+          width: 100%;
+        }
+
+        p{
+          color: grey;
+        }
+      }
   }
 }
 
@@ -498,11 +523,18 @@ const submitProjectCreation = ()=>{
         display: block;
         overflow-y: scroll;
       }
+
+      .empty_task{
+        display: block;
+        background-color: white;
+        flex: 1;
+      }
     }
 
     .wrapper{
       width: 76%;
       overflow-y: scroll;
+      min-height: 100vh;
 
       .topnav{
         display: grid; 
@@ -521,6 +553,17 @@ const submitProjectCreation = ()=>{
         .addTable{
           display: flex; 
           justify-content: end;
+        }
+      }
+
+      .no_project{
+        padding-top: 80px;
+        .dotLottie{
+          width: 80%;
+        }
+
+        p{
+          margin: 0;
         }
       }
     }
