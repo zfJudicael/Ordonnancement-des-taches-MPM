@@ -56,7 +56,7 @@
 
       <div v-else class="no_project">
           <DotLottieVue class="dotLottie" autoplay loop :src="LottiesURL.empty" />
-          <p>Aucun projet trouvé, veuillez en créer.</p>
+          <p>Aucun projet selectionné, veuillez en choisir ou en créer.</p>
       </div>
     </div>
 
