@@ -411,6 +411,7 @@ const confirmProjectDelete = ()=>{
 
         p{
           color: grey;
+          text-align: center;
         }
       }
   }
