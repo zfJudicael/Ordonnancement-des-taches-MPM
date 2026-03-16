@@ -60,7 +60,7 @@
       </div>
     </div>
 
-  <CreateNewProjectDialog 
+  <CreateProjectDialog 
     v-model:isVisible="isCreationDialogVisible" 
     v-model:new-project="initialNewTableValues" 
     @submit="createNewProject"
@@ -120,7 +120,7 @@ import TaskCard from '@/components/TaskCard.vue';
 import { useRoute } from 'vue-router';
 import { DotLottieVue } from '@lottiefiles/dotlottie-vue';
 import { LottiesURL } from '@/const/lottiesURL';
-import CreateNewProjectDialog from '@/components/dialogs/CreateNewProjectDialog.vue';
+import CreateProjectDialog from '@/components/dialogs/CreateProjectDialog.vue';
 import CustomDialog from '@/components/dialogs/CustomDialog.vue';
 
 const toast = useToast()
@@ -129,27 +129,24 @@ const projectList = ref<Project[]>([])
 const selectedProject = ref<Project>()
 
 const route = useRoute()
-const isExample = ref<boolean>(true)
 
 onMounted(()=>{
+  let isExample = true
   let exampleQuery = route.query.isExample?.toString();
   if(exampleQuery){
     let val = parseInt(exampleQuery)
 
-    if(isNaN(val)) isExample.value = true
+    if(isNaN(val)) isExample = true
 
-    if(val == 0) isExample.value = false
-    else isExample.value = true
+    if(val == 0) isExample = false
+    else isExample = true
   }
 
-  if(isExample.value){
-
-    console.log("Exempleee")
+  if(isExample){
     projectList.value = [DefaultTable1]
     selectedProject.value = projectList.value[0]
-
   }else{
-    console.log("Noon")
+    openTableCreationDialog()
   }
 })
 
