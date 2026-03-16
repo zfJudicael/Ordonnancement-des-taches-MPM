@@ -36,12 +36,14 @@
 
     <FeaturesSection />
 
+    <HowItWorksSection />
   </div>
 </template>
 
 <script setup lang="ts">
 import { Button } from 'primevue';
 import FeaturesSection from './sections/FeaturesSection.vue';
+import HowItWorksSection from './sections/HowItWorksSection.vue';
 </script>
 
 <style lang="scss">
