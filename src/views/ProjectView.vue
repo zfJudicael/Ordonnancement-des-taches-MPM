@@ -82,29 +82,22 @@
     </div>
   </CustomDialog>
 
-  <Dialog v-model:visible="isUpdatingTaskDialogVisible" modal close-on-escape :header='`Mise à jour de la tâche "${selectedTaskKey}"`' :style="{ width: '30rem' }">
-    <form @submit.prevent="submitTaskUpdate">
-      <div>
-        <p style="margin-bottom: 0;">Durée</p>
-        <InputNumber v-model="selectedTask.duration" name="duration" fluid/>
-      </div>
+  <CustomDialog 
+    :header='`Mise à jour de la tâche "${selectedTaskKey}"`'
+    v-model:isVisible="isUpdatingTaskDialogVisible"
+    @submit="submitTaskUpdate"
+    >
+    <div>
+      <p style="margin-bottom: 0;">Durée</p>
+      <InputNumber v-model="selectedTask.duration" name="duration" fluid/>
+    </div>
 
-      <div>
-        <p style="margin-bottom: 0;">Tâches antérieures</p>
-        <MultiSelect v-model="selectedTask.previousTasks" :options="selectedProject?.getTaskArray(selectedTaskKey)" display="chip" filter placeholder="Selectionner" style="width: 80%;" />
-      </div>
+    <div>
+      <p style="margin-bottom: 0;">Tâches antérieures</p>
+      <MultiSelect v-model="selectedTask.previousTasks" :options="selectedProject?.getTaskArray(selectedTaskKey)" display="chip" filter placeholder="Selectionner" style="width: 80%;" />
+    </div>
+  </CustomDialog>
 
-      <Divider />
-
-      <div style="display: flex; gap: 5px; justify-content: end;">
-        <Button type="submit" icon="pi pi-check" severity="info" raised label="Confirmer"/>
-        <Button icon="pi pi-times" severity="danger" @click="isUpdatingTaskDialogVisible = false" raised label="Annuler"/>
-      </div>
-    </form>
-  </Dialog>
-
-  <ConfirmDialog></ConfirmDialog>
-  <Toast position="bottom-right"></Toast>
   </div>
 </template>
 
@@ -114,12 +107,9 @@ import InputText from 'primevue/inputtext';
 import InputNumber from 'primevue/inputnumber';
 import Button from 'primevue/button';
 import Select from 'primevue/select';
-import Toast from 'primevue/toast';
-import ConfirmDialog from 'primevue/confirmdialog';
 import MultiSelect from 'primevue/multiselect';
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from 'primevue/usetoast';
-import { Dialog } from 'primevue';
 import Divider from 'primevue/divider';
 import Card from 'primevue/card';
 import { Project, type TaskModel } from '@/models/Project';
@@ -330,7 +320,7 @@ const confirmProjectDelete = ()=>{
             return table.name != selectedProject.value?.name
           })
           selectedProject.value = projectList.value[0]
-          toast.add({ severity: 'info', summary: 'Succées', detail: 'Suppression effectuée', life: 3000 });
+          toast.add({ severity: 'info', summary: 'Succes', detail: 'Suppression effectuée', life: 10000 });
         },
         reject: () => {
             toast.add({ severity: 'warn', summary: 'Rejeté', detail: 'Vous avez rejeté la supppression', life: 3000 });
