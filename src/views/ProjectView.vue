@@ -66,26 +66,21 @@
     @submit="createNewProject"
   />
 
-  <Dialog v-model:visible="isAddingTaskDialogVisible" modal close-on-escape header="Ajout d'une nouvelle tâche" :style="{ width: '30rem' }">
-    <form @submit.prevent="submitTaskCreation">
-      <div>
-        <p style="margin-bottom: 0;">Nom</p>
-        <InputText v-model="newTask.name" name="task" type="text" fluid/>
-      </div>
+  <CustomDialog 
+    header="Ajout d'une nouvelle tâche" 
+    v-model:isVisible="isAddingTaskDialogVisible" 
+    @submit="submitTaskCreation"
+    >
+    <div>
+      <p style="margin-bottom: 0;">Nom</p>
+      <InputText v-model="newTask.name" name="task" type="text" fluid/>
+    </div>
 
-      <div>
-        <p style="margin-bottom: 0;">Durée</p>
-        <InputNumber v-model="newTask.duration" name="duration" fluid/>
-      </div>
-
-      <Divider />
-
-      <div style="display: flex; gap: 5px; justify-content: end;">
-        <Button type="submit" icon="pi pi-check" severity="info" raised label="Confirmer"/>
-        <Button icon="pi pi-times" severity="danger" @click="isAddingTaskDialogVisible = false" raised label="Annuler"/>
-      </div>
-    </form>
-  </Dialog>
+    <div>
+      <p style="margin-bottom: 0;">Durée</p>
+      <InputNumber v-model="newTask.duration" name="duration" fluid/>
+    </div>
+  </CustomDialog>
 
   <Dialog v-model:visible="isUpdatingTaskDialogVisible" modal close-on-escape :header='`Mise à jour de la tâche "${selectedTaskKey}"`' :style="{ width: '30rem' }">
     <form @submit.prevent="submitTaskUpdate">
@@ -136,6 +131,7 @@ import { useRoute } from 'vue-router';
 import { DotLottieVue } from '@lottiefiles/dotlottie-vue';
 import { LottiesURL } from '@/const/lottiesURL';
 import CreateNewProjectDialog from '@/components/dialogs/CreateNewProjectDialog.vue';
+import CustomDialog from '@/components/dialogs/CustomDialog.vue';
 
 const toast = useToast()
 
