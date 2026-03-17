@@ -39,46 +39,53 @@
 </template>
 
 <style lang="scss">
-.features{
-    display: grid;
-    gap: 10px;
+.features_section{
+  margin-bottom: 50px ;
 
-    .feature{
-      padding: 10px;
-      border: 1px solid rgba(0,0,0,0.1);
-      background-color: white;
-      border-radius: 10px;
-      transition: all 0.5s;
-
-      i{
+  .features{
+      display: grid;
+      gap: 10px;
+  
+      .feature{
+        padding: 10px;
+        border: 1px solid rgba(0,0,0,0.1);
+        background-color: white;
+        border-radius: 10px;
         transition: all 0.5s;
-        font-size: 2rem;
-      }
-
-      h3{
-        margin: 15px 0;
-        transition: all 0.5s;
-      }
-
-      p{
-        color: rgb(97, 97, 97);
-        font-size:medium;
-        line-height: 1.5;
-      }
-
-      &:hover{
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-
+  
         i{
-          color: blue;
+          transition: all 0.5s;
+          font-size: 2rem;
+        }
+  
+        h3{
+          margin: 15px 0;
+          transition: all 0.5s;
+        }
+  
+        p{
+          color: rgb(97, 97, 97);
+          font-size:medium;
+          line-height: 1.5;
+        }
+  
+        &:hover{
+          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  
+          i{
+            color: blue;
+          }
         }
       }
-    }
+  }
 }
 
+
 @media (min-width: 768px) {
+  .features_section{
+    margin-bottom: 100px;
+    
     .features{
-        display: grid;
         gap: 20px;
         grid-template-columns: repeat(3, 1fr);
 
@@ -98,5 +105,6 @@
           }
         }
     }
+  }
 }
 </style>

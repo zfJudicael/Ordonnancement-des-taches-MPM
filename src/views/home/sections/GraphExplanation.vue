@@ -61,6 +61,8 @@ const tabs = ref([
 
 <style lang="scss">
 .graph_explanation{
+    margin: 50px 0;
+
     .diagram{
         display: block;
         margin: 20px auto;
@@ -70,7 +72,10 @@ const tabs = ref([
 
 @media (min-width: 768px) {
     .graph_explanation{
+        margin: 100px 0;
+        
         .diagram{
+            margin: 40px auto;
             width: 80%;
         }
     }
