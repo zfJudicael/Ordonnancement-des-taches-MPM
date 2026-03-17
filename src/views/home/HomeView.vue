@@ -29,7 +29,7 @@
       </div>
 
       <div class="image">
-        <img src="/src/assets/images/01.jpeg" alt="diagramme">
+        <img :src="StaticFiles.mpmGraph" alt="diagramme">
       </div>
     </section>
 
@@ -37,6 +37,8 @@
     <FeaturesSection />
 
     <HowItWorksSection />
+
+    <GraphExplanation />
   </div>
 </template>
 
@@ -44,6 +46,8 @@
 import { Button } from 'primevue';
 import FeaturesSection from './sections/FeaturesSection.vue';
 import HowItWorksSection from './sections/HowItWorksSection.vue';
+import GraphExplanation from './sections/GraphExplanation.vue';
+import { StaticFiles } from '@/const/staticFiles';
 </script>
 
 <style lang="scss">
