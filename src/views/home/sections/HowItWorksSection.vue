@@ -41,7 +41,7 @@ const steps = reactive<{ordre: number, title: string, text: string}[]>([
 <style lang="scss">
 .how_it_works{
     text-align: center;
-    margin: 50px 0;
+    margin: 70px 0;
     cursor: default;
 
     .steps{

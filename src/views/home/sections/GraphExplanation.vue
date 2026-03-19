@@ -61,7 +61,7 @@ const tabs = ref([
 
 <style lang="scss">
 .graph_explanation{
-    margin: 50px 0;
+    margin: 70px 0;
 
     .diagram{
         display: block;
