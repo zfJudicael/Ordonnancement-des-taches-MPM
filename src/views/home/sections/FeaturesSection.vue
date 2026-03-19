@@ -40,7 +40,7 @@
 
 <style lang="scss">
 .features_section{
-  margin-bottom: 50px ;
+  margin: 50px 0;
 
   .features{
       display: grid;
@@ -83,7 +83,7 @@
 
 @media (min-width: 768px) {
   .features_section{
-    margin-bottom: 100px;
+    margin: 100px 0;
     
     .features{
         gap: 20px;

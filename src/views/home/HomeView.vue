@@ -32,7 +32,8 @@
         <img :src="StaticFiles.mpmGraph" alt="diagramme">
       </div>
     </section>
-
+    
+    <HistorySection />
 
     <FeaturesSection />
 
@@ -44,6 +45,7 @@
 
 <script setup lang="ts">
 import { Button } from 'primevue';
+import HistorySection from './sections/HistorySection.vue';
 import FeaturesSection from './sections/FeaturesSection.vue';
 import HowItWorksSection from './sections/HowItWorksSection.vue';
 import GraphExplanation from './sections/GraphExplanation.vue';
