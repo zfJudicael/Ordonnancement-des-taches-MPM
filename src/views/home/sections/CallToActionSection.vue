@@ -1,6 +1,10 @@
 <template>
     <section class="call_to_action">
-        <Button aria-label="Commencer un projet" size="large" class="btn">
+        <Button aria-label="Commencer un projet" size="large" class="btn"
+            @click="$router.push({name: 'project', query: {
+                isExample: '0'
+            }})"
+        >
             <span>Plannifier votre projet</span>
             <i class="pi pi-arrow-right"></i>
         </Button>

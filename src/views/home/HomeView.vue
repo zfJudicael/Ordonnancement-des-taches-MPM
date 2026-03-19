@@ -1,11 +1,12 @@
 <template>
   <div class="home_view">
-    <HeroSection />
-    <HistorySection />
-    <FeaturesSection />
-    <HowItWorksSection />
-    <GraphExplanation />
-    <CallToActionSection />
+    <HeroSection class="section"/>
+    <HistorySection class="section"/>
+    <FeaturesSection class="section"/>
+    <HowItWorksSection class="section"/>
+    <GraphExplanation class="section"/>
+    <CallToActionSection class="section"/>
+    <Footer />
   </div>
 </template>
 
@@ -16,18 +17,24 @@ import FeaturesSection from './sections/FeaturesSection.vue';
 import HowItWorksSection from './sections/HowItWorksSection.vue';
 import GraphExplanation from './sections/GraphExplanation.vue';
 import CallToActionSection from './sections/CallToActionSection.vue';
+import Footer from './sections/Footer.vue';
 </script>
 
 <style lang="scss">
 .home_view{
   background-color: #f8fafc;
   min-height: 100vh;
-  padding: 20px;
+  
+  .section{
+    padding: 20px;
+  }
 }
 
 @media (min-width: 768px) {
   .home_view{
-    padding: 40px;
+    .section{
+      padding: 40px;
+    }
   }
 }
 </style>
