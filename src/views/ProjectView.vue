@@ -8,8 +8,10 @@
         <template v-if="selectedProject">
           <div class="project_description">
             <p>Nom du projet : {{ selectedProject.name }}</p>
+            <p>Déscription : {{ selectedProject.description }}</p>
             <p>Nombre de tâches : {{ selectedProject.getTasks.size }}</p>
-            <p>Durée totale: {{ selectedProject.totalDuration }}</p>
+
+            <p>Durée minimale: {{ selectedProject.totalDuration }}</p>
     
               <div style="display: flex; justify-content: end; gap: 5px;">
                 <Button icon="pi pi-trash" severity="danger" raised size="small" label="Supprimer" @click="confirmProjectDelete"/>
@@ -115,7 +117,7 @@ import Card from 'primevue/card';
 import { Project, type TaskModel } from '@/models/Project';
 import TableView from '@/components/TableView.vue';
 import MPMGaph from '@/components/MPMGaph.vue';
-import { DefaultTable1 } from '@/const/DefaultProjects';
+import { DefaultTable5 } from '@/const/DefaultProjects';
 import TaskCard from '@/components/TaskCard.vue';
 import { useRoute } from 'vue-router';
 import { DotLottieVue } from '@lottiefiles/dotlottie-vue';
@@ -143,7 +145,7 @@ onMounted(()=>{
   }
 
   if(isExample){
-    projectList.value = [DefaultTable1]
+    projectList.value = [DefaultTable5]
     selectedProject.value = projectList.value[0]
   }else{
     openTableCreationDialog()
@@ -257,9 +259,11 @@ const isCreationDialogVisible = ref<boolean>(false)
 
 const initialNewTableValues = reactive<{
   name: string,
+  description: string,
   tasks: TaskModel[]
 }>({
   name: '',
+  description: '',
   tasks: []
 })
 const openTableCreationDialog = ()=>{
@@ -270,6 +274,7 @@ const openTableCreationDialog = ()=>{
 
 const initTableCreation = ()=>{
   initialNewTableValues.name = ''
+  initialNewTableValues.description = ''
   initialNewTableValues.tasks = []
 }
 
@@ -287,7 +292,7 @@ const createNewProject = ()=>{
     })
   })
 
-  projectList.value.push(new Project(initialNewTableValues.name, taskMap))
+  projectList.value.push(new Project(initialNewTableValues.name, initialNewTableValues.description, taskMap))
 
   toast.add({ severity: 'info', summary: 'Succées', detail: 'Votre projet est créé avec succès.', life: 3000 });
 }

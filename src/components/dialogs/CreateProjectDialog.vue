@@ -2,11 +2,16 @@
     <Dialog v-model:visible="isVisible" modal close-on-escape header="Création d'un nouveau projet" :style="{ width: '35rem'}">
     <form @submit.prevent="submit">
       <div style="width: 60%;">
-        <p style="flex-grow: 1; text-wrap: nowrap; margin: 0;">Nom du projet: </p>
-        <InputText style="flex-grow: 1;" v-model="newProject.name" name="name" type="text" fluid 
+        <p style="margin: 0;">Nom du projet: </p>
+        <InputText v-model="newProject.name" name="name" type="text" fluid 
         :invalid="nameErrorMessage.length > 0"
         />
         <Message severity="error" variant="simple" size="small">{{ nameErrorMessage }}</Message>
+      </div>
+
+      <div style="margin: 10px 0;">
+        <p style="margin: 0;">Déscription : </p>
+        <Textarea v-model="newProject.description" rows="5" style="width: 100%;" placeholder="..."/>
       </div>
 
       <div v-if="newProject.tasks.length>0">
@@ -50,6 +55,7 @@ import { Dialog } from 'primevue';
 import Message from 'primevue/message';
 import InputText from 'primevue/inputtext';
 import InputNumber from 'primevue/inputnumber';
+import Textarea from 'primevue/textarea';
 import Button from 'primevue/button';
 import Divider from 'primevue/divider';
 import { ref } from 'vue';
@@ -58,6 +64,7 @@ const isVisible = defineModel('isVisible', { type: Boolean, required: true })
 
 const newProject = defineModel<{
     name: string,
+    description: string,
     tasks: TaskModel[]
 }>('newProject', { required: true })
 

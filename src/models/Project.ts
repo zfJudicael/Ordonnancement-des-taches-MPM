@@ -12,6 +12,7 @@ export interface TaskModel{
 
 export class Project{
     name: string;
+    description: string;
     tasks: Map<string, TaskModel>;
     tasksInCriticalPath: string[];
     orderedTasks: string[]
@@ -20,8 +21,9 @@ export class Project{
     startTasks: string[];
     lastTasks: string[];
 
-    constructor(name: string, tasks: Map<string, TaskModel>){
+    constructor(name: string, description: string ,tasks: Map<string, TaskModel>){
         this.name = name
+        this.description = description
         this.tasks = tasks
         this.tasksInCriticalPath = []
         this.orderedTasks = []

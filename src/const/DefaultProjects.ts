@@ -61,24 +61,133 @@ export const Table3 = new Map<string, TaskModel>([
     ["L", { duration: 24, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["H", "I", "J"], nextTasks: [] }],
 ])
 
+export const Table4 = new Map<string, TaskModel>([
+    ["A", { duration: 8, earlyDate: 0, lateDate: 0, isCritical: false,  previousTasks: [], nextTasks: [] }],
+    ["B", { duration: 12, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["A"], nextTasks: [] }],
+    ["C", { duration: 4, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["B"], nextTasks: [] }],
+    ["D", { duration: 8, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["B"], nextTasks: [] }],
+    ["E", { duration: 4, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["B"], nextTasks: [] }],
+    ["F", { duration: 8, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["B"], nextTasks: [] }],
+    ["G", { duration: 24, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["C", "D"], nextTasks: [] }],
+    ["H", { duration: 20, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["E", "F", "G"], nextTasks: [] }],
+    ["I", { duration: 12, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["C", "D"], nextTasks: [] }],
+    ["J", { duration: 16, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["E", "F", "G"], nextTasks: [] }],
+    ["K", { duration: 32, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["I", "H"], nextTasks: [] }],
+    ["L", { duration: 36, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["I", "H", "J"], nextTasks: [] }],
+])
+
+export const TableEvent = new Map<string, TaskModel>([
+    ["A", { duration: 2, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: [], nextTasks: [] }],
+    ["B", { duration: 1, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["A"], nextTasks: [] }],
+    ["C", { duration: 3, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["B"], nextTasks: [] }],
+    ["D", { duration: 2, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["B"], nextTasks: [] }],
+    ["E", { duration: 3, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["D"], nextTasks: [] }],
+    ["F", { duration: 4, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["C"], nextTasks: [] }],
+    ["G", { duration: 3, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["C"], nextTasks: [] }],
+    ["H", { duration: 2, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["C"], nextTasks: [] }],
+    ["I", { duration: 3, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["B"], nextTasks: [] }],
+    ["J", { duration: 4, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["E"], nextTasks: [] }],
+    ["K", { duration: 2, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["G"], nextTasks: [] }],
+    ["L", { duration: 2, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["F"], nextTasks: [] }],
+    ["M", { duration: 1, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["J", "K"], nextTasks: [] }],
+    ["N", { duration: 1, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["M", "L"], nextTasks: [] }],
+]);
+
+export const TableEvent10 = new Map<string, TaskModel>([
+    ["A", { duration: 2, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: [], nextTasks: [] }], 
+    // Définir budget
+    ["B", { duration: 1, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["A"], nextTasks: [] }], 
+    // Choisir date
+    ["C", { duration: 2, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["B"], nextTasks: [] }], 
+    // Faire liste invités
+    ["D", { duration: 3, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["C"], nextTasks: [] }], 
+    // Envoyer invitations
+    ["E", { duration: 3, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["B"], nextTasks: [] }], 
+    // Réserver lieu
+    ["F", { duration: 4, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["E"], nextTasks: [] }], 
+    // Traiteur & décoration
+    ["G", { duration: 2, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["D", "F"], nextTasks: [] }], 
+    // Logistique et transport
+    ["H", { duration: 2, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["F"], nextTasks: [] }], 
+    // Installation sur lieu
+    ["I", { duration: 1, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["G", "H"], nextTasks: [] }], 
+    // Vérifications finales
+    ["J", { duration: 1, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["I"], nextTasks: [] }], 
+    // Événement / Jour J
+]);
+
+export const TableVoyage10 = new Map<string, TaskModel>([
+    ["A", { duration: 2, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: [], nextTasks: [] }], // Choisir destination
+    ["B", { duration: 1, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["A"], nextTasks: [] }], // Définir budget
+    ["C", { duration: 3, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["A"], nextTasks: [] }], // Réserver transport (avion, train)
+    ["D", { duration: 2, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["B"], nextTasks: [] }], // Réserver hébergement
+    ["E", { duration: 2, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["C", "D"], nextTasks: [] }], // Préparer itinéraire
+    ["F", { duration: 1, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["E"], nextTasks: [] }], // Vérifier passeports / visas
+    ["G", { duration: 1, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["E"], nextTasks: [] }], // Souscrire assurance voyage
+    ["H", { duration: 2, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["F", "G"], nextTasks: [] }], // Faire valises / achats nécessaires
+    ["I", { duration: 1, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["H"], nextTasks: [] }], // Vérification finale
+    ["J", { duration: 1, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["I"], nextTasks: [] }], // Départ / Voyage
+]);
+
+//Construction d'un nouvel entrepôt
+export const TableEntrepot = new Map<string, TaskModel>([
+    ["A", { duration: 4, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: [], nextTasks: [] }],
+    // Etudes et calculs des besoins en composants et matières
+    ["B", { duration: 2, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: [], nextTasks: [] }],
+    // Installation du chantier
+    ["C", { duration: 1, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["A"], nextTasks: [] }],
+    // Caractéristiques des commandes 
+    ["D", { duration: 1, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["A","B"], nextTasks: [] }],
+    // Appel d'offre pour l'ensemble des composants
+    ["E", { duration: 2, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["A"], nextTasks: [] }],
+    // Choix des fournisseurs et intervenants
+    ["F", { duration: 2, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["C"], nextTasks: [] }],
+    // Livraison des matériaux
+    ["G", { duration: 2, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["D", "F"], nextTasks: [] }],
+    // Coulage des fondations
+    ["H", { duration: 10, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["E"], nextTasks: [] }],
+    // Délai de livraison des autres composants
+    ["I", { duration: 4, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["G"], nextTasks: [] }],
+    // Construction 
+    ["J", { duration: 1, earlyDate: 0, lateDate: 0, isCritical: false, previousTasks: ["H", "I"], nextTasks: [] }],
+    // Mise en route de l'ensemble
+])
+
 const DefaultTable1 = new Project(
     "Exemple01",
+    "",
     Table1
 )
 
 const DefaultTable2 = new Project(
     "Exemple02",
+    "",
     Table2
 )
 
 const DefaultTable3 = new Project(
     "Exemple03",
+    "",
     Table3
+)
+
+const DefaultTable4 = new Project(
+    "Exemple04",
+    "Mise en exploitation d'un nouveau gisement minier ",
+    Table4
+)
+
+const DefaultTable5 = new Project(
+    "Exemple01",
+    "Construction d'un nouvel entrepôt",
+    TableEntrepot
 )
 
 export {
     DefaultTable1,
     DefaultTable2,
-    DefaultTable3
+    DefaultTable3,
+    DefaultTable4,
+    DefaultTable5
 }
 
