@@ -74,7 +74,8 @@
     >
     <div>
       <p style="margin-bottom: 0;">Identifiant</p>
-      <InputText v-model="newTask.id" name="id" type="text" fluid style="width: 50%;"/>
+      <InputText v-model="newTask.id" name="id" type="text" fluid style="width: 50%;" :invalid="newTaskError.id.length > 0"/>
+      <Message severity="error" variant="simple" size="small">{{ newTaskError.id }}</Message>
     </div>
 
     <div>
@@ -84,7 +85,8 @@
 
     <div>
       <p style="margin-bottom: 0;">Durée</p>
-      <InputNumber v-model="newTask.duration" name="duration" fluid/>
+      <InputNumber v-model="newTask.duration" name="duration" fluid :invalid="newTaskError.duration.length > 0"/>
+      <Message severity="error" variant="simple" size="small">{{ newTaskError.duration }}</Message>
     </div>
   </CustomDialog>
 
@@ -93,15 +95,17 @@
     v-model:isVisible="isUpdatingTaskDialogVisible"
     @submit="submitTaskUpdate"
     >
+    
+    <div >
+      <p style="margin-bottom: 0;">Nom</p>
+      <InputText v-model="selectedTask.name" name="name" fluid/>
+    </div>
+
     <div >
       <p style="margin-bottom: 0;">Durée</p>
       <InputNumber v-model="selectedTask.duration" name="duration" fluid style="width: 50%;"/>
     </div>
 
-    <div >
-      <p style="margin-bottom: 0;">Nom</p>
-      <InputText v-model="selectedTask.name" name="name" fluid/>
-    </div>
 
     <div>
       <p style="margin-bottom: 0;">Tâches antérieures</p>
@@ -116,6 +120,7 @@
 import { onMounted, reactive, ref } from 'vue'
 import InputText from 'primevue/inputtext';
 import InputNumber from 'primevue/inputnumber';
+import Message from 'primevue/message';
 import Button from 'primevue/button';
 import Select from 'primevue/select';
 import MultiSelect from 'primevue/multiselect';
@@ -194,9 +199,39 @@ const openTaskCreationDialog = ()=>{
   }
 }
 
+const newTaskError = reactive<{
+  id: string,
+  duration: string
+}>({
+  id: '',
+  duration: ''
+})
+const validateNewTaskId = ()=>{
+  if(newTask.value.id.length > 0){
+    newTaskError.id = ''
+  }else{
+    newTaskError.id = "Champ requis"
+  }
+
+  return newTask.value.id.length > 0
+}
+
+const validateNewTaskDuration = ()=>{
+  if(newTask.value.duration == null){
+    newTaskError.duration = "Champ requis"
+  }else{
+    newTaskError.duration = ''
+  }
+
+  return newTask.value.duration != null
+}
+
+
 const submitTaskCreation = ()=>{
-  selectedProject.value?.addTask(newTask.value)
-  isAddingTaskDialogVisible.value = false
+  if(validateNewTaskId() && validateNewTaskDuration()){
+    selectedProject.value?.addTask(newTask.value)
+    isAddingTaskDialogVisible.value = false
+  }
 }
 
 
