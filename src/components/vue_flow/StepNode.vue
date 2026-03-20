@@ -1,5 +1,8 @@
 <template>
-    <div class="step_node" :class="{ critical: data.isCritical }">
+    <div class="step_node" :class="{ critical: data.isCritical }"
+        @mouseenter="handleEnter"
+        @mouseleave="handleLeave"
+    >
         <div class="value">
             <p class="totalFloat">{{ data.float }}</p>
             <div class="date">
@@ -7,6 +10,8 @@
                 <p>{{ data.lateDate }}</p>
             </div>
             <p class="label">{{ data.label }}</p>
+        
+            <p class="tooltip" v-if="showTooltip">{{ data.name }}</p>
         </div>
 
         <Handle type="target" class="left_handle" :position="Position.Left"/>
@@ -17,8 +22,23 @@
 <script setup lang="ts">
 import { Position, Handle } from '@vue-flow/core';
 import type { NodeProps } from '@vue-flow/core';
+import { ref } from 'vue';
 
 const props = defineProps<NodeProps>()
+
+const showTooltip = ref<boolean>(false)
+
+let timer: any = null
+const handleEnter = ()=>{
+    timer = setTimeout(()=>{
+        showTooltip.value = true
+    }, 1000)
+}
+
+const handleLeave = ()=>{
+    clearTimeout(timer);
+    showTooltip.value = false
+}
 </script>
 
 <style lang="scss">
@@ -78,6 +98,18 @@ const props = defineProps<NodeProps>()
             width: 100%;
             text-align: center;
             padding-top: 4px;
+        }
+        
+        .tooltip{
+            position: absolute;
+            bottom: 0;
+            left: 120%;
+            background: rgb(125, 125, 125);
+            color: white;
+            padding: 5px;
+            font-size: 12px;
+            border-radius: 4px;
+            white-space: nowrap;
         }
     }
 

@@ -327,6 +327,7 @@ export class Project{
                         label: taskKey,
                         earlyDate: task.earlyDate,
                         lateDate: task.lateDate,
+                        name: task.name,
                         isCritical: task.isCritical,
                         float: task.lateDate - task.earlyDate
                     }
