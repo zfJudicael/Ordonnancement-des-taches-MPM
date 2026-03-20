@@ -1,6 +1,7 @@
 import type { Edge, Node } from "@vue-flow/core";
 
 export interface TaskModel{
+    id: string,
     name?: string;
     duration: number;
     lateDate: number;
@@ -35,24 +36,25 @@ export class Project{
     }
 
     addTask(newTask: TaskModel){
-        if(newTask.name) {
-            this.tasks.set(newTask.name, {
-                duration: newTask.duration,
-                earlyDate: newTask.earlyDate,
-                lateDate: newTask.lateDate,
-                previousTasks: newTask.previousTasks,
-                nextTasks: newTask.nextTasks,
-                isCritical: (newTask.earlyDate - newTask.lateDate) == 0 
-            })
-
-            this.loadAnswer()
-        }
+        this.tasks.set(newTask.id, {
+            id: newTask.id,
+            name: newTask.name,
+            duration: newTask.duration,
+            earlyDate: newTask.earlyDate,
+            lateDate: newTask.lateDate,
+            previousTasks: newTask.previousTasks,
+            nextTasks: newTask.nextTasks,
+            isCritical: (newTask.earlyDate - newTask.lateDate) == 0 
+        })
+    
+        this.loadAnswer()
     }
 
     updateTask(key: string, updateTask: TaskModel){
         let task = this.tasks.get(key)
 
         if(task){
+            task.name = updateTask.name
             task.duration = updateTask.duration
             task.earlyDate = updateTask.earlyDate
             task.lateDate = updateTask.lateDate
@@ -68,7 +70,6 @@ export class Project{
             let newPreviousTasks: string[] =  []
 
             newPreviousTasks = value.previousTasks.filter((taskKey)=> taskKey != selectedTaskkey )
-            console.log(value.previousTasks, newPreviousTasks)
             value.previousTasks = newPreviousTasks
         })
 
@@ -169,6 +170,8 @@ export class Project{
     setStart(){
         this.tasks.set("deb", 
             {   
+                id: "deb",
+                name: "Début projet",
                 duration: 0, 
                 earlyDate: 0, 
                 lateDate: 0, 
@@ -182,6 +185,8 @@ export class Project{
     setEnd(){
         this.tasks.set("fin", 
             {
+                id: "",
+                name: 'Fin du projet',
                 duration: 0, 
                 earlyDate: 0, 
                 lateDate: 0, 

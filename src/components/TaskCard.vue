@@ -10,6 +10,7 @@
                @click="$emit('remove')"/>
             </div>
           </div>
+          <p style="font-weight: bold;">{{ task.name }}</p>
           <p>Durée : {{ task.duration }}</p>
           <p>Marge de retard : {{ task.lateDate - task.earlyDate }}</p>
           <p style="margin-bottom: 2px;">Tâche(s) antérieure(s) :</p>

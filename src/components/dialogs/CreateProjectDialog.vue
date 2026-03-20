@@ -18,20 +18,27 @@
         <p style="margin-bottom: 0;">{{ 
           (newProject.tasks.length > 1)? "Tâches" : "Tâche"
           }}</p>
-        <div v-for="(task, index) in newProject.tasks" style="display: flex; gap: 5px; align-items:first baseline;">
+        <div v-for="(task, index) in newProject.tasks" style="display: flex; gap: 5px; align-items:first baseline; margin: 15px 0;">
           <i class="pi pi-angle-right"></i>
           <div>
-            <InputText style="flex-grow: 1;" v-model="task.name" name="task" type="text" placeholder="Nom" fluid
-             :invalid="tasksErrorMessage[index].name.length > 0"/>
-            <Message severity="error" variant="simple" size="small">{{ tasksErrorMessage[index].name }}</Message>
-          </div>
-          <div>
-            <InputNumber v-model="task.duration" name="duration" placeholder="Durée" fluid :invalid="tasksErrorMessage[index].duration.length > 0"/>
-            <Message severity="error" variant="simple" size="small">{{ tasksErrorMessage[index].duration }}</Message>
+            <div style="display: flex; gap: 2px;">
+              <div>
+                <InputText style="flex-grow: 1;" v-model="task.id" name="task" type="text" placeholder="Identifiant" fluid
+                 :invalid="tasksErrorMessage[index].id.length > 0"/>
+                <Message severity="error" variant="simple" size="small">{{ tasksErrorMessage[index].id }}</Message>
+              </div>
+              <div>
+                <InputNumber v-model="task.duration" name="duration" placeholder="Durée" fluid :invalid="tasksErrorMessage[index].duration.length > 0"/>
+                <Message severity="error" variant="simple" size="small">{{ tasksErrorMessage[index].duration }}</Message>
+              </div>
+            </div>
+
+            <InputText style="margin-top: 4px; width: 100%;" v-model="task.name" name="task" type="text" placeholder="Nom" fluid/>
           </div>
           <Button icon="pi pi-trash" variant="text" severity="danger" raised rounded aria-label="Delete" size="small" 
             @click="removeTask(index)"  
           />
+
         </div>
       </div>
 
@@ -73,12 +80,13 @@ const emits = defineEmits(['submit'])
 const nameErrorMessage = ref('')
 const taskError = ref('')
 const tasksErrorMessage = ref<{
-  name:string,
+  id:string,
   duration: string
 }[]>([])
 
 const addEmptyTask = ()=>{
   newProject.value.tasks.push({
+    id: '',
     name: '',
     duration: 0,
     lateDate: 0,
@@ -90,7 +98,7 @@ const addEmptyTask = ()=>{
 
   taskError.value = ''
   tasksErrorMessage.value.push({
-    name: '',
+    id: '',
     duration: ''
   })
 }
@@ -117,10 +125,10 @@ const validateTasks = ()=>{
     taskError.value = ''
 
     for(let i=0; i < newProject.value.tasks.length; i++){
-      if(newProject.value.tasks[i].name!.length > 0){
-        tasksErrorMessage.value[i].name = ''
+      if(newProject.value.tasks[i].id.length > 0){
+        tasksErrorMessage.value[i].id = ''
       }else{
-        tasksErrorMessage.value[i].name = 'Champ requis'
+        tasksErrorMessage.value[i].id = 'Champ requis'
         valid = false
       }
 

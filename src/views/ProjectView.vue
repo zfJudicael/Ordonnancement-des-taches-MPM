@@ -7,11 +7,10 @@
 
         <template v-if="selectedProject">
           <div class="project_description">
-            <p>Nom du projet : {{ selectedProject.name }}</p>
-            <p>Déscription : {{ selectedProject.description }}</p>
-            <p>Nombre de tâches : {{ selectedProject.getTasks.size }}</p>
-
-            <p>Durée minimale: {{ selectedProject.totalDuration }}</p>
+            <p><strong>Nom du projet :</strong> {{ selectedProject.name }}</p>
+            <p><strong>Déscription :</strong> {{ selectedProject.description }}</p>
+            <p><strong>Nombre de tâches :</strong> {{ selectedProject.getTasks.size }}</p>
+            <p><strong>Durée minimale :</strong> {{ selectedProject.totalDuration }}</p>
     
               <div style="display: flex; justify-content: end; gap: 5px;">
                 <Button icon="pi pi-trash" severity="danger" raised size="small" label="Supprimer" @click="confirmProjectDelete"/>
@@ -74,8 +73,13 @@
     @submit="submitTaskCreation"
     >
     <div>
+      <p style="margin-bottom: 0;">Identifiant</p>
+      <InputText v-model="newTask.id" name="id" type="text" fluid style="width: 50%;"/>
+    </div>
+
+    <div>
       <p style="margin-bottom: 0;">Nom</p>
-      <InputText v-model="newTask.name" name="task" type="text" fluid/>
+      <InputText v-model="newTask.name" name="name" type="text" fluid/>
     </div>
 
     <div>
@@ -89,14 +93,19 @@
     v-model:isVisible="isUpdatingTaskDialogVisible"
     @submit="submitTaskUpdate"
     >
-    <div>
+    <div >
       <p style="margin-bottom: 0;">Durée</p>
-      <InputNumber v-model="selectedTask.duration" name="duration" fluid/>
+      <InputNumber v-model="selectedTask.duration" name="duration" fluid style="width: 50%;"/>
+    </div>
+
+    <div >
+      <p style="margin-bottom: 0;">Nom</p>
+      <InputText v-model="selectedTask.name" name="name" fluid/>
     </div>
 
     <div>
       <p style="margin-bottom: 0;">Tâches antérieures</p>
-      <MultiSelect v-model="selectedTask.previousTasks" :options="selectedProject?.getTaskArray(selectedTaskKey)" display="chip" filter placeholder="Selectionner" style="width: 80%;" />
+      <MultiSelect v-model="selectedTask.previousTasks" :options="selectedProject?.getTaskArray(selectedTaskKey)" display="chip" filter placeholder="Selectionner" style="width: 100%;" />
     </div>
   </CustomDialog>
 
@@ -117,7 +126,7 @@ import Card from 'primevue/card';
 import { Project, type TaskModel } from '@/models/Project';
 import TableView from '@/components/TableView.vue';
 import MPMGaph from '@/components/MPMGaph.vue';
-import { DefaultTable5 } from '@/const/DefaultProjects';
+import { Example } from '@/const/DefaultProjects';
 import TaskCard from '@/components/TaskCard.vue';
 import { useRoute } from 'vue-router';
 import { DotLottieVue } from '@lottiefiles/dotlottie-vue';
@@ -145,7 +154,7 @@ onMounted(()=>{
   }
 
   if(isExample){
-    projectList.value = [DefaultTable5]
+    projectList.value = [Example]
     selectedProject.value = projectList.value[0]
   }else{
     openTableCreationDialog()
@@ -153,12 +162,15 @@ onMounted(()=>{
 })
 
 
-///////////////////////////////////////////
-///////////////////////////////////////////
-/////////    Task creation      //////////
-///////////////////////////////////////////
-///////////////////////////////////////////
+//////////////////////////////////////////
+/////////////    Task      ///////////////
+//////////////////////////////////////////
+
+// ++
+// CREATE task
+// ++
 const newTask = ref<TaskModel>({
+  id: '',
   name: '',
   duration: 0,
   earlyDate: 0,
@@ -171,6 +183,7 @@ const isAddingTaskDialogVisible = ref<boolean>(false)
 const openTaskCreationDialog = ()=>{
   isAddingTaskDialogVisible.value = true
   newTask.value = {
+    id: '',
     name: '',
     duration: 0,
     earlyDate: 0,
@@ -187,13 +200,13 @@ const submitTaskCreation = ()=>{
 }
 
 
-///////////////////////////////////////////
-///////////////////////////////////////////
-/////////      Task update       //////////
-///////////////////////////////////////////
-///////////////////////////////////////////
+// ++
+// UPDATE task
+// ++
 const selectedTaskKey = ref<string>('')
 const selectedTask = ref<TaskModel>({
+  id: '',
+  name: '',
   duration: 0,
   earlyDate: 0,
   lateDate: 0,
@@ -213,12 +226,9 @@ const submitTaskUpdate = ()=>{
   isUpdatingTaskDialogVisible.value = false
 }
 
-///////////////////////////////////////////
-///////////////////////////////////////////
-/////////      Task delete      //////////
-///////////////////////////////////////////
-///////////////////////////////////////////
-
+// ++
+// DELETE task
+// ++
 const confirm = useConfirm()
 
 const confirmTaskDelete = (taskKey: string, task: TaskModel)=>{
@@ -250,11 +260,13 @@ const confirmTaskDelete = (taskKey: string, task: TaskModel)=>{
   })
 }
 
-///////////////////////////////////////////
-///////////////////////////////////////////
-/////////    Project creation      ////////
-///////////////////////////////////////////
-///////////////////////////////////////////
+/////////////////////////////////////////
+///////////    Project      /////////////
+/////////////////////////////////////////
+
+// ++
+// CREATE project
+// ++
 const isCreationDialogVisible = ref<boolean>(false)
 
 const initialNewTableValues = reactive<{
@@ -269,7 +281,6 @@ const initialNewTableValues = reactive<{
 const openTableCreationDialog = ()=>{
   isCreationDialogVisible.value = true
   initTableCreation()
-  console.log(isCreationDialogVisible.value)
 }
 
 const initTableCreation = ()=>{
@@ -282,7 +293,9 @@ const createNewProject = ()=>{
   isCreationDialogVisible.value = false
   let taskMap = new Map<string, TaskModel>()
   initialNewTableValues.tasks.forEach((task)=>{
-    if(task.name) taskMap.set(task.name, {
+    taskMap.set(task.id, {
+      id: task.id,
+      name: task.name,
       duration: task.duration,
       lateDate: task.lateDate,
       earlyDate: task.earlyDate,
@@ -297,11 +310,9 @@ const createNewProject = ()=>{
   toast.add({ severity: 'info', summary: 'Succées', detail: 'Votre projet est créé avec succès.', life: 3000 });
 }
 
-///////////////////////////////////////////
-///////////////////////////////////////////
-/////////    Delete Project      //////////
-///////////////////////////////////////////
-///////////////////////////////////////////
+// ++
+// DELETE project
+// ++
 const confirmProjectDelete = ()=>{
   confirm.require({
     message: `Voulez vous vraiment supprimer ce projet "${selectedProject.value?.name}"?`,
