@@ -20,7 +20,7 @@
           </p>
           <p>
             <template v-if="value.nextTasks?.[0] == 'fin' ">
-              <span style="font-weight: bold;">F</span>
+              <span style="font-weight: bold;">Fin</span>
             </template>
             <span v-else v-for="nextTask in value.nextTasks">{{ nextTask }}</span>
           </p>
