@@ -31,7 +31,7 @@
   
         <div class="feature">
           <i class="pi pi-download"></i>
-          <h3>Exportat du diagramme</h3>
+          <h3>Export du diagramme</h3>
           <p>Téléchargez votre diagramme  pour le partager facilement.</p>
         </div>
       </div>
@@ -71,9 +71,35 @@
   
         &:hover{
           box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  
+        }
+
+        &:nth-of-type(1){
           i{
             color: blue;
+          }
+        }
+
+        &:nth-of-type(2){
+          i{
+            color: red;
+          }
+        }
+
+        &:nth-of-type(3){
+          i{
+            color: green;
+          }
+        }
+
+        &:nth-of-type(4){
+          i{
+            color: gray;
+          }
+        }
+
+        &:nth-of-type(5){
+          i{
+            color: purple;
           }
         }
       }
