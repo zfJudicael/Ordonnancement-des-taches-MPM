@@ -47,7 +47,7 @@
       gap: 10px;
   
       .feature{
-        padding: 10px;
+        padding: 20px;
         border: 1px solid rgba(0,0,0,0.1);
         background-color: white;
         border-radius: 10px;
