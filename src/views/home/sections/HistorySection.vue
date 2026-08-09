@@ -17,12 +17,7 @@
 <style lang="scss">
 .history{
     text-align: center;
-    margin-bottom: 70px;
-}
-
-@media (min-width: 768px) {
-    .history{
-        margin-bottom: 150px;
-    }
+    background-color: #164E63;
+    color: white;
 }
 </style>
