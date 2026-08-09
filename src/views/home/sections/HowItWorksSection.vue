@@ -4,20 +4,26 @@
       <p style="color: rgb(97, 97, 97);">Trois étapes simples pour planifier votre projet</p>
 
       <div class="steps">
-        <div v-for="step in steps" :key="step.ordre" class="step">
-            <div class="order">
-                <p>{{ step.ordre }}</p>
-            </div>
-            <h3>{{ step.title }}</h3>
-            <p class="text">{{ step.text }}</p>
+            <motion.div
+                v-for="step in steps" 
+                :key="step.ordre" class="step"
+                :initial="{ opacity: 0, y: 40 }"
+                :whileInView="{ opacity: 1, y: 0 }"
+                :transition="{ duration: 0.25, delay: step.ordre * 0.15 }"
+            >
+                <div class="order">
+                    <p>{{ step.ordre }}</p>
+                </div>
+                <h3>{{ step.title }}</h3>
+                <p class="text">{{ step.text }}</p>
+            </motion.div>
         </div>
-
-      </div>
     </section>
 </template>
 
 <script setup lang="ts">
 import { reactive } from 'vue';
+import { motion } from "motion-v";
 
 const steps = reactive<{ordre: number, title: string, text: string}[]>([
     {

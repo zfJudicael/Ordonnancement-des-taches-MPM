@@ -3,7 +3,7 @@
       <h2>Fonctionnalités</h2>
       <p>Tous les outils dont vous avez besoin pour gérer vos projets efficacement</p>
 
-      <div class="features" ref="features">
+      <div class="features">
         <motion.div
           class="feature"
           v-for="(feature, index) in featuresData"
