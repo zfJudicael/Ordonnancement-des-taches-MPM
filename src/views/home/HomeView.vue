@@ -6,6 +6,18 @@
     <HowItWorksSection class="section"/>
     <GraphExplanation class="section"/>
     <CallToActionSection class="section"/>
+    <div class="section-divider">
+       <svg
+           viewBox="0 0 1440 150"
+           preserveAspectRatio="none"
+           xmlns="http://www.w3.org/2000/svg"
+       >
+           <path
+               fill="#1f2937"
+               d="M0,0 C240,100 480,100 720,50 C960,0 1200,30 1440,0 L1440,150 L0,150 Z"
+           />
+       </svg>
+    </div>
     <Footer />
   </div>
 </template>
@@ -47,6 +59,20 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss">
+.section-divider {
+    width: 100%;
+    height: 60px;
+    line-height: 0;
+    overflow: hidden;
+    background-color: white;
+}
+
+.section-divider svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
 .home_view{
   background-color: #f8fafc;
   min-height: 100vh;
