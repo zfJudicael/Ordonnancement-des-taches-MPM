@@ -1,42 +1,57 @@
 <template>
-    <section class="features_section">
+    <section class="features_section" ref="featuresSection">
       <h2>Fonctionnalités</h2>
       <p>Tous les outils dont vous avez besoin pour gérer vos projets efficacement</p>
 
-      <div class="features">
-        <div class="feature">
-          <i class="pi pi-sitemap"></i>
-          <h3>Graphe MPM</h3>
-          <p>Visualisez votre projet sous forme de graphe grâce à la méthode des potentiels Métra.</p>
-        </div>
-
-        
-        <div class="feature">
-          <i class="pi pi-bolt"></i>
-          <h3>Chemin critique</h3>
-          <p>Identifiez automatiquement le chemin critique de votre projet pour mieux repérer les tâches essentielles qui déterminent la durée de votre projet.</p>
-        </div>
-        
-        <div class="feature">
-          <i class="pi pi-list"></i>
-          <h3>Gestion des tâches</h3>
-          <p>Gérez facilement vos tâches, leurs durées et leurs dépendances dans une interface intuitive.</p>
-        </div>
-
-        <div class="feature">
-          <i class="pi pi-calendar-clock"></i>
-          <h3>Marge des tâches</h3>
-          <p>Réperez les tâches qui peuvent être retardées sans impacter la fin du projet.</p>
-        </div>
-  
-        <div class="feature">
-          <i class="pi pi-download"></i>
-          <h3>Export du diagramme</h3>
-          <p>Téléchargez votre diagramme  pour le partager facilement.</p>
-        </div>
+      <div class="features" ref="features">
+        <motion.div
+          class="feature"
+          v-for="(feature, index) in featuresData"
+          :key="index"
+          :initial="{ opacity: 0, y: 60 }"
+          :whileInView="{ opacity: 1, y: 0 }"
+          :transition="{ duration: 0.25, delay: index * 0.15 }"
+        >
+          <i :class="`pi ${feature.icon}`"></i>
+          <h3>{{ feature.title }}</h3>
+          <p>{{ feature.description }}</p>
+        </motion.div>
       </div>
+
     </section>
 </template>
+
+<script setup lang="ts">
+import { motion } from "motion-v";
+
+const featuresData = [
+  {
+    icon: 'pi-sitemap',
+    title: 'Graphe MPM',
+    description: 'Visualisez votre projet sous forme de graphe grâce à la méthode des potentiels Métra.'
+  },
+  {
+    icon: 'pi-bolt',
+    title: 'Chemin critique',
+    description: 'Identifiez automatiquement le chemin critique de votre projet pour mieux repérer les tâches essentielles qui déterminent la durée de votre projet.'
+  },
+  {
+    icon: 'pi-list',
+    title: 'Gestion des tâches',
+    description: 'Gérez facilement vos tâches, leurs durées et leurs dépendances dans une interface intuitive.'
+  },
+  {
+    icon: 'pi-calendar-clock',
+    title: 'Marge des tâches',
+    description: 'Repérez les tâches qui peuvent être retardées sans impacter la fin de votre projet.'
+  },
+  {
+    icon: 'pi-download',
+    title: 'Export du diagramme',
+    description: 'Téléchargez votre diagramme pour le partager facilement.'
+  }
+]
+</script>
 
 <style lang="scss">
 .features_section{
