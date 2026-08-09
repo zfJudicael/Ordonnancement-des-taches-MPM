@@ -10,7 +10,7 @@
             </p>
             
             <div class="buttons">
-            <Button aria-label="Commencer un projet" class="start" raised
+            <Button aria-label="Commencer un projet" class="start" raised size="large"
                 @click="$router.push({name: 'project', query: {
                 isExample: '0'
                 }})"
@@ -19,7 +19,7 @@
                 <i class="pi pi-arrow-right"></i>
             </Button>
             
-            <Button label="Voir exemple" severity="secondary" variant="text" raised
+            <Button label="Voir exemple" severity="secondary" variant="text" raised size="large"
                 @click="$router.push({name: 'project', query: {
                 isExample: '1'
                 }})"

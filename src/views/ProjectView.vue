@@ -25,6 +25,14 @@
           <h3>Liste des tâches</h3>
           <Button icon="pi pi-file-plus" variant="text" size="small" severity="secondary" raised @click="openTaskCreationDialog"/>
         </div>
+
+        <InputGroup style="margin: 0 0 10px 0;">
+            <InputText placeholder="Rechercher une tâche par identifiant"/>
+            <InputGroupAddon>
+                <Button icon="pi pi-search" severity="secondary" variant="text"/>
+            </InputGroupAddon>
+        </InputGroup>
+
         <div class="taskLists">
           <TaskCard v-for="[taskKey, task] in selectedProject.getTasks" :key="taskKey" :task-key="taskKey" :task="task" 
             @edit="openTaskUpdatingDialog(taskKey, task)" 
@@ -120,6 +128,8 @@
 import { onMounted, reactive, ref } from 'vue'
 import InputText from 'primevue/inputtext';
 import InputNumber from 'primevue/inputnumber';
+import InputGroup from 'primevue/inputgroup';
+import InputGroupAddon from 'primevue/inputgroupaddon';
 import Message from 'primevue/message';
 import Button from 'primevue/button';
 import Select from 'primevue/select';
