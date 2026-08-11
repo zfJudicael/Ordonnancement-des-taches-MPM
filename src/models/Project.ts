@@ -1,4 +1,5 @@
-import type { Edge, Node } from "@vue-flow/core";
+import type { SimpleEdge, SimpleNode } from "@/types";
+import type { Edge as VFEdge, Node as VFNode } from "@vue-flow/core";
 
 export interface TaskModel{
     id: string,
@@ -286,8 +287,8 @@ export class Project{
         return this.orderedTasks;
     }
     
-    public get getNodes(){
-        let nodeList: Node[] = []
+    public get getNodes(): SimpleNode[]{
+        let nodeList: SimpleNode[] = []
         this.tasks.forEach((task, taskKey)=>{
             if(taskKey == 'deb'){
                 nodeList.push({
@@ -350,8 +351,8 @@ export class Project{
         return nodeList;
     }
 
-    public get getEdges(){
-        let edgeList: Edge[] = []
+    public get getEdges(): SimpleEdge[]{
+        let edgeList: SimpleEdge[] = []
         this.tasks.forEach((task, taskKey)=>{
             task.nextTasks.forEach((nextTaskKey)=>{
                 let isCritical:boolean = false

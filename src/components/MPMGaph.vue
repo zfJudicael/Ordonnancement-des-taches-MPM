@@ -17,7 +17,7 @@
                 </div>
             </div>
 
-            <VueFlow :nodes="nodes" :edges="edges" :style="{ background: 'white' }">
+            <VueFlow :nodes="props.nodes" :edges="props.edges" :style="{ background: 'white' }">
                 <template #node-start="startNodeProps">
                     <StartNode v-bind="startNodeProps" />
                 </template>
@@ -47,7 +47,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { Node, Edge } from '@vue-flow/core';
+import type { Node as VFNode, Edge as VFEdge } from '@vue-flow/core';
 import { VueFlow } from '@vue-flow/core';
 import { Controls, ControlButton } from '@vue-flow/controls';
 import { Background } from '@vue-flow/background';
@@ -56,18 +56,12 @@ import StepNode from './vue_flow/StepNode.vue';
 import DefaultEdge from './vue_flow/DefaultEdge.vue';
 import EndNode from './vue_flow/EndNode.vue';
 import { useScreenshot } from '@/composables/useScreenshot';
-import type { ImageType } from '@/types';
+import type { ImageType, SimpleNode, SimpleEdge } from '@/types';
 
-defineProps({
-  nodes: {
-    type: Array<Node>,
-    required: true
-  },
-  edges: {
-    type: Array<Edge>,
-    required: true
-  }
-})
+const props = defineProps<{
+  nodes: SimpleNode[]
+  edges: SimpleEdge[]
+}>()
 
 const vueFlowRef = ref<HTMLElement>()
 const filter = (node: globalThis.Node)=>{
