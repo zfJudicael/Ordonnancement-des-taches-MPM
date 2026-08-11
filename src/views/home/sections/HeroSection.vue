@@ -1,25 +1,21 @@
 <template>
     <section class="hero">
         <div class="text">
-            <h1>Planifiez vos projets facilement</h1>
+            <h1>Planifiez vos projets avec la méthode MPM</h1>
             
-            <p>Cette plateforme vous aide à organiser et planifier vos tâches
-            grâce à la méthode MPM (Méthode des Potentiels Métra).
-            Visualisez votre projet, identifiez le chemin critique
-            et optimisez votre planning.
-            </p>
+            <p>Project Planner MPM vous aide à planifier et analyser vos projets grâce à la méthode des Potentiels Métra. Visualisez les tâches et leurs dépendances, identifiez le chemin critique et optimisez votre planning.</p>
             
             <div class="buttons">
-                <Button aria-label="Commencer un projet" class="start" raised size="medium"
+                <Button aria-label="Créer un projet avec la méthode MPM" class="start" raised size="medium"
                     @click="$router.push({name: 'project', query: {
                     isExample: '0'
                     }})"
                 >
-                    <span>Commencer un projet</span>
+                    <span>Créer un projet</span>
                     <i class="pi pi-arrow-right"></i>
                 </Button>
                 
-                <Button label="Voir exemple" severity="secondary" variant="text" raised size="medium"
+                <Button label="Voir un exemple" severity="secondary" variant="text" raised size="medium"
                     @click="$router.push({name: 'project', query: {
                     isExample: '1'
                     }})"
