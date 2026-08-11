@@ -3,14 +3,15 @@
     <h2>Qu’est-ce que la méthode MPM ?</h2>
 
     <p>
-      La méthode MPM (Méthode des Potentiels Métra) est une technique
-      d’ordonnancement permettant de planifier et organiser les tâches d’un projet.
+      La méthode des Potentiels Métra (MPM) est une méthode d’ordonnancement qui représente les tâches d’un projet et leurs dépendances sous forme de graphe.
     </p>
 
     <p>
-      Elle a été développée en 1958 par Bernard ROY et appliquée notamment dans des projets industriels comme la construction
-      d'une centrale nucléaire EDF.
+      Développée en 1958 par Bernard Roy, elle permet notamment de déterminer la durée minimale du projet, les dates au plus tôt et au plus tard, les marges ainsi que le chemin critique.
     </p>
+
+    <h2 style="margin-top: 40px;">Pourquoi utiliser Project Planner MPM ?</h2>
+    <p>Project Planner MPM vous aide à visualiser votre projet, comprendre les dépendances entre les tâches et identifier celles qui peuvent influencer sa durée.</p>
   </section>
 </template>
 

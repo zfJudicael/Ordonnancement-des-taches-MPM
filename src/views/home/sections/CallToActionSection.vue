@@ -5,7 +5,7 @@
                 isExample: '0'
             }})"
         >
-            <span>Plannifier votre projet</span>
+            <span>Créer mon projet</span>
             <i class="pi pi-arrow-right"></i>
         </Button>
     </section>

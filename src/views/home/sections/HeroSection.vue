@@ -10,20 +10,20 @@
             </p>
             
             <div class="buttons">
-            <Button aria-label="Commencer un projet" class="start" raised size="large"
-                @click="$router.push({name: 'project', query: {
-                isExample: '0'
-                }})"
-            >
-                <span>Commencer un projet</span>
-                <i class="pi pi-arrow-right"></i>
-            </Button>
-            
-            <Button label="Voir exemple" severity="secondary" variant="text" raised size="large"
-                @click="$router.push({name: 'project', query: {
-                isExample: '1'
-                }})"
-            />
+                <Button aria-label="Commencer un projet" class="start" raised size="medium"
+                    @click="$router.push({name: 'project', query: {
+                    isExample: '0'
+                    }})"
+                >
+                    <span>Commencer un projet</span>
+                    <i class="pi pi-arrow-right"></i>
+                </Button>
+                
+                <Button label="Voir exemple" severity="secondary" variant="text" raised size="medium"
+                    @click="$router.push({name: 'project', query: {
+                    isExample: '1'
+                    }})"
+                />
             </div>
         </div>
 
@@ -54,7 +54,7 @@ import { StaticFiles } from '@/const/staticFiles';
 
         .buttons{
             display: flex;
-            gap: 6px;
+            gap: 4px;
         }
     }
 

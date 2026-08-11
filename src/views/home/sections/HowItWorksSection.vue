@@ -29,17 +29,17 @@ const steps = reactive<{ordre: number, title: string, text: string}[]>([
     {
         ordre: 1,
         title: "Créez votre projet",
-        text: "Donnez un nom à votre projet."
+        text: "Définissez le nom de votre projet."
     },
     {
         ordre: 2,
-        title: "Définissez vos tâches",
-        text: "Ajoutez les tâches de votre projet avec leurs durées et dépendances."
+        title: "Définissez vos dépendances",
+        text: "Ajoutez vos tâches, leurs durées et les relations qui déterminent leur ordre d'exécution."
     },
     {
         ordre: 3,
-        title: "Visualisez le graphe",
-        text: "Le graph MPM est généré automatiquement."
+        title: "Analysez le projet",
+        text: "Visualisez automatiquement le graphe MPM, identifiez le chemin critique et déterminez la durée minimale de votre projet."
     }
 ])
 </script>
