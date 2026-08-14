@@ -7,8 +7,8 @@
             <Divider />
             
             <div style="display: flex; gap: 5px; justify-content: end;">
-                <Button type="submit" icon="pi pi-check" severity="info" raised label="Confirmer"/>
-                <Button icon="pi pi-times" severity="danger" @click="isVisible = false" raised label="Annuler"/>
+                <Button type="submit" icon="pi pi-check" severity="info" raised label="Confirmer" size="small"/>
+                <Button icon="pi pi-times" severity="danger" @click="isVisible = false" raised label="Annuler" size="small"/>
             </div>
         </form>
     </Dialog>
