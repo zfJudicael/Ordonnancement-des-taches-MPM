@@ -13,6 +13,7 @@
             <p><strong>Durée minimale :</strong> {{ selectedProject.totalDuration }}</p>
     
               <div style="display: flex; justify-content: end; gap: 5px;">
+                <Button icon="pi pi-pencil" severity="info" raised size="small" label="Modifier" @click="openProjectUpdatingDialog"/>
                 <Button icon="pi pi-trash" severity="danger" raised size="small" label="Supprimer" @click="confirmProjectDelete"/>
               </div>
           </div>
@@ -80,7 +81,7 @@
     v-model:isVisible="isAddingTaskDialogVisible" 
     @submit="submitTaskCreation"
     >
-    <div>
+    <div v-if="!selectedProject?.isTaskIdGenerated">
       <p style="margin-bottom: 0;">Identifiant</p>
       <InputText v-model="newTask.id" name="id" type="text" fluid style="width: 50%;" :invalid="newTaskError.id.length > 0"/>
       <Message severity="error" variant="simple" size="small">{{ newTaskError.id }}</Message>
@@ -121,6 +122,24 @@
     </div>
   </CustomDialog>
 
+  <CustomDialog 
+    header='Modification projet'
+    v-model:isVisible="isUpdatingProjectDialogVisible"
+    @submit="submitProjectUpdate"
+    >
+    
+    <div >
+      <p style="margin-bottom: 0;">Nom</p>
+      <InputText v-model="projectUpdate.name" name="name" fluid/>
+      <Message severity="error" variant="simple" size="small">{{ projectNameError }}</Message>
+    </div>
+
+    <div >
+      <p style="margin-bottom: 0;">Description</p>
+      <InputText v-model="projectUpdate.description" name="description" fluid/>
+    </div>
+  </CustomDialog>
+
   </div>
 </template>
 
@@ -148,6 +167,7 @@ import { DotLottieVue } from '@lottiefiles/dotlottie-vue';
 import { LottiesURL } from '@/const/lottiesURL';
 import CreateProjectDialog from '@/components/dialogs/CreateProjectDialog.vue';
 import CustomDialog from '@/components/dialogs/CustomDialog.vue';
+import useGenerateId from '@/composables/useGenerateId';
 
 const toast = useToast()
 
@@ -195,10 +215,20 @@ const newTask = ref<TaskModel>({
   nextTasks: []
 })
 const isAddingTaskDialogVisible = ref<boolean>(false)
-const openTaskCreationDialog = ()=>{
-  isAddingTaskDialogVisible.value = true
+const openTaskCreationDialog = ()=>{  
+  let id = ''
+  console.log(selectedProject.value?.isTaskIdGenerated)
+  if(selectedProject.value?.isTaskIdGenerated){
+    id = useGenerateId()
+    if(selectedProject.value?.getTasks.has(id)){
+      while(selectedProject.value?.getTasks.has(id)){
+        id = useGenerateId()
+      }
+    }
+  }
+
   newTask.value = {
-    id: '',
+    id,
     name: '',
     duration: 0,
     earlyDate: 0,
@@ -207,6 +237,7 @@ const openTaskCreationDialog = ()=>{
     previousTasks: [],
     nextTasks: []
   }
+  isAddingTaskDialogVisible.value = true
 }
 
 const newTaskError = reactive<{
@@ -267,8 +298,13 @@ const openTaskUpdatingDialog = (key: string, task: TaskModel)=>{
 }
 
 const submitTaskUpdate = ()=>{
-  selectedProject.value?.updateTask(selectedTaskKey.value, selectedTask.value)
-  isUpdatingTaskDialogVisible.value = false
+  if(selectedTaskKey.value.length > 0){
+    if(selectedTask.value.duration == null){
+      selectedTask.value.duration = 0;
+    }
+    selectedProject.value?.updateTask(selectedTaskKey.value, selectedTask.value)
+    isUpdatingTaskDialogVisible.value = false
+  }
 }
 
 // ++
@@ -353,9 +389,47 @@ const createNewProject = ()=>{
     })
   })
 
-  projectList.value.push(new Project(initialNewTableValues.name, initialNewTableValues.description, taskMap))
+  projectList.value.push(new Project(initialNewTableValues.name, initialNewTableValues.description, taskMap, initialNewTableValues.isTaskIdGenerated))
 
   toast.add({ severity: 'info', summary: 'Succées', detail: 'Votre projet est créé avec succès.', life: 3000 });
+}
+
+// ++
+// EDIT project
+// ++
+const projectNameError = ref<string>('')
+
+const projectUpdate = reactive<{
+  name: string,
+  description: string
+}>({
+  name: '',
+  description: ''
+})
+
+const openProjectUpdatingDialog = ()=>{
+  if(selectedProject.value){
+    projectUpdate.name = selectedProject.value.name
+    projectUpdate.description = selectedProject.value.description
+    projectNameError.value = ''
+    isUpdatingProjectDialogVisible.value = true
+  }
+}
+
+const isUpdatingProjectDialogVisible = ref<boolean>(false)
+const submitProjectUpdate = ()=>{
+  if(selectedProject.value){
+
+    if(projectUpdate.name.length == 0){
+      projectNameError.value = 'Le nom du projet est requis.'
+      return
+    }
+    
+    projectNameError.value = ''
+    selectedProject.value.name = projectUpdate.name
+    selectedProject.value.description = projectUpdate.description
+    isUpdatingProjectDialogVisible.value = false
+  }
 }
 
 // ++
