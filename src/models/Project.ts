@@ -1,5 +1,4 @@
 import type { SimpleEdge, SimpleNode } from "@/types";
-import type { Edge as VFEdge, Node as VFNode } from "@vue-flow/core";
 
 export interface TaskModel{
     id: string,
@@ -9,7 +8,7 @@ export interface TaskModel{
     earlyDate: number;
     isCritical: boolean;
     nextTasks: string[];
-    previousTasks: string[]
+    previousTasks: string[];
 }
 
 export class Project{
@@ -22,8 +21,9 @@ export class Project{
     totalDuration: number;
     startTasks: string[];
     lastTasks: string[];
+    isTaskIdGenerated: boolean;
 
-    constructor(name: string, description: string ,tasks: Map<string, TaskModel>){
+    constructor(name: string, description: string ,tasks: Map<string, TaskModel>, isTaskIdGenerated: boolean = false){
         this.name = name
         this.description = description
         this.tasks = tasks
@@ -32,7 +32,7 @@ export class Project{
         this.totalDuration = 0
         this.startTasks = []
         this.lastTasks = []
-        
+        this.isTaskIdGenerated = isTaskIdGenerated
         this.loadAnswer()
     }
 
@@ -45,7 +45,7 @@ export class Project{
             lateDate: newTask.lateDate,
             previousTasks: newTask.previousTasks,
             nextTasks: newTask.nextTasks,
-            isCritical: (newTask.earlyDate - newTask.lateDate) == 0 
+            isCritical: (newTask.earlyDate - newTask.lateDate) == 0 ,
         })
     
         this.loadAnswer()

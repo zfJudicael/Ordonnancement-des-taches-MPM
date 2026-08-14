@@ -317,10 +317,12 @@ const isCreationDialogVisible = ref<boolean>(false)
 const initialNewTableValues = reactive<{
   name: string,
   description: string,
+  isTaskIdGenerated: boolean,
   tasks: TaskModel[]
 }>({
   name: '',
   description: '',
+  isTaskIdGenerated: true,
   tasks: []
 })
 const openTableCreationDialog = ()=>{
@@ -331,6 +333,7 @@ const openTableCreationDialog = ()=>{
 const initTableCreation = ()=>{
   initialNewTableValues.name = ''
   initialNewTableValues.description = ''
+  initialNewTableValues.isTaskIdGenerated = true
   initialNewTableValues.tasks = []
 }
 

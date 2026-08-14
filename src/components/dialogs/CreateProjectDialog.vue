@@ -1,7 +1,7 @@
 <template>
     <Dialog v-model:visible="isVisible" modal close-on-escape header="Création d'un nouveau projet" :style="{ width: '35rem'}">
     <form @submit.prevent="submit">
-      <div style="width: 60%;">
+      <div>
         <p style="margin: 0;">Nom du projet: </p>
         <InputText v-model="newProject.name" name="name" type="text" fluid 
         :invalid="nameErrorMessage.length > 0"
@@ -13,18 +13,26 @@
         <p style="margin: 0;">Déscription : </p>
         <Textarea v-model="newProject.description" rows="5" style="width: 100%;" placeholder="..."/>
       </div>
+      
+      <div style="display: flex; gap: 5px; align-items: center; margin: 10px 0;">
+        <p style="margin: 0">Générer automatiquement les identifiants des tâches</p>
+        <ToggleSwitch v-model="newProject.isTaskIdGenerated" />
+      </div>
 
       <div v-if="newProject.tasks.length>0">
-        <p style="margin-bottom: 0;">{{ 
-          (newProject.tasks.length > 1)? "Tâches" : "Tâche"
-          }}</p>
+          <p style="margin-bottom: 0;">{{ 
+            (newProject.tasks.length > 1)? "Tâches" : "Tâche"
+            }}</p>
+        
         <div v-for="(task, index) in newProject.tasks" style="display: flex; gap: 5px; align-items:first baseline; margin: 15px 0;">
           <i class="pi pi-angle-right"></i>
           <div>
-            <div style="display: flex; gap: 2px;">
+            <div style="display: flex; gap: 4px;">
               <div>
                 <InputText style="flex-grow: 1;" v-model="task.id" name="task" type="text" placeholder="Identifiant" fluid
-                 :invalid="tasksErrorMessage[index].id.length > 0"/>
+                 :invalid="tasksErrorMessage[index].id.length > 0"
+                 :disabled="newProject.isTaskIdGenerated"
+                 />
                 <Message severity="error" variant="simple" size="small">{{ tasksErrorMessage[index].id }}</Message>
               </div>
               <div>
@@ -42,7 +50,6 @@
         </div>
       </div>
 
-      <Message severity="error" variant="simple" size="small" style="margin-top: 10px;">{{ taskError }}</Message>
       <Divider />
       <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px;">
         <Button icon="pi pi-file-plus" raised label="Ajouter tâche" @click="addEmptyTask"/>
@@ -65,28 +72,41 @@ import InputNumber from 'primevue/inputnumber';
 import Textarea from 'primevue/textarea';
 import Button from 'primevue/button';
 import Divider from 'primevue/divider';
+import ToggleSwitch from 'primevue/toggleswitch';
 import { ref } from 'vue';
+import useGenerateId from '@/composables/useGenerateId';
 
 const isVisible = defineModel('isVisible', { type: Boolean, required: true })
 
 const newProject = defineModel<{
     name: string,
     description: string,
+    isTaskIdGenerated: boolean,
     tasks: TaskModel[]
 }>('newProject', { required: true })
 
 const emits = defineEmits(['submit'])
 
 const nameErrorMessage = ref('')
-const taskError = ref('')
 const tasksErrorMessage = ref<{
   id:string,
   duration: string
 }[]>([])
 
 const addEmptyTask = ()=>{
+  let id = ''
+  if(newProject.value.isTaskIdGenerated){
+    id = useGenerateId()
+
+    if(newProject.value.tasks.some(task => task.id === id)){
+      while(newProject.value.tasks.some(task => task.id === id)){
+        id = useGenerateId()
+      }
+    }
+  }
+
   newProject.value.tasks.push({
-    id: '',
+    id,
     name: '',
     duration: 0,
     lateDate: 0,
@@ -96,7 +116,6 @@ const addEmptyTask = ()=>{
     nextTasks: []
   })
 
-  taskError.value = ''
   tasksErrorMessage.value.push({
     id: '',
     duration: ''
@@ -122,11 +141,16 @@ const validateTasks = ()=>{
   let valid = true;
 
   if(newProject.value.tasks.length > 0){
-    taskError.value = ''
-
     for(let i=0; i < newProject.value.tasks.length; i++){
       if(newProject.value.tasks[i].id.length > 0){
-        tasksErrorMessage.value[i].id = ''
+
+        if(newProject.value.tasks.filter((task, index) => task.id === newProject.value.tasks[i].id && index !== i).length > 0){
+          tasksErrorMessage.value[i].id = 'Identifiant utilisé par une autre tâche'
+          valid = false
+        }else{
+          tasksErrorMessage.value[i].id = ''
+        }
+
       }else{
         tasksErrorMessage.value[i].id = 'Champ requis'
         valid = false
@@ -139,9 +163,6 @@ const validateTasks = ()=>{
         tasksErrorMessage.value[i].duration = ''
       }
     }
-  }else{
-    taskError.value = 'Veuillez ajouter au moins une tâche'
-    valid = false
   }
 
   return valid;
