@@ -27,12 +27,12 @@
           <Button icon="pi pi-file-plus" variant="text" size="small" severity="secondary" raised @click="openTaskCreationDialog"/>
         </div>
 
-        <InputGroup style="margin: 0 0 10px 0;">
+        <!-- <InputGroup style="margin: 0 0 10px 0;">
             <InputText placeholder="Rechercher une tâche par identifiant"/>
             <InputGroupAddon>
                 <Button icon="pi pi-search" severity="secondary" variant="text"/>
             </InputGroupAddon>
-        </InputGroup>
+        </InputGroup> -->
 
         <div class="taskLists">
           <TaskCard v-for="[taskKey, task] in selectedProject.getTasks" :key="taskKey" :task-key="taskKey" :task="task" 
