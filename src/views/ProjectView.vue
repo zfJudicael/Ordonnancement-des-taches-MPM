@@ -136,7 +136,7 @@
 
     <div >
       <p style="margin-bottom: 0;">Description</p>
-      <InputText v-model="projectUpdate.description" name="description" fluid/>
+      <Textarea v-model="projectUpdate.description" rows="5" style="width: 100%;" placeholder="..."/>
     </div>
   </CustomDialog>
 
@@ -147,8 +147,6 @@
 import { onMounted, reactive, ref } from 'vue'
 import InputText from 'primevue/inputtext';
 import InputNumber from 'primevue/inputnumber';
-import InputGroup from 'primevue/inputgroup';
-import InputGroupAddon from 'primevue/inputgroupaddon';
 import Message from 'primevue/message';
 import Button from 'primevue/button';
 import Select from 'primevue/select';
@@ -168,6 +166,7 @@ import { LottiesURL } from '@/const/lottiesURL';
 import CreateProjectDialog from '@/components/dialogs/CreateProjectDialog.vue';
 import CustomDialog from '@/components/dialogs/CustomDialog.vue';
 import useGenerateId from '@/composables/useGenerateId';
+import Textarea from 'primevue/textarea';
 
 const toast = useToast()
 
