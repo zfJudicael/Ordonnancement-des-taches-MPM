@@ -4,13 +4,13 @@
       <p>Tous les outils dont vous avez besoin pour gérer vos projets efficacement</p>
 
       <div class="features">
-        <motion.div
+         <motion.div
           class="feature"
           v-for="(feature, index) in featuresData"
           :key="index"
-          :initial="{ opacity: 0, y: 60 }"
-          :whileInView="{ opacity: 1, y: 0 }"
-          :transition="{ duration: 0.25, delay: index * 0.15 }"
+          :initial="{ y: 30 }"
+          :whileInView="{ y: 0 }"
+          :transition="{ duration: 0.3, delay: index * 0.12, ease: 'easeInOut' }"
           :inViewOptions="{ once: true }"
         >
           <i :class="`pi ${feature.icon}`"></i>
