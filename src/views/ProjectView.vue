@@ -2,7 +2,10 @@
   <div class="project_view">
     <div class="navigation">
       <div class="sticky_header">
-        <h3 class="title" @click="$router.push({name: 'home'})">Project Planner MPM</h3>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+          <AppIcon style="width: 30px; height: 30px;"/>
+          <h3 class="title" @click="$router.push({name: 'home'})">Project Planner MPM</h3>
+        </div>
         <Divider />
 
         <template v-if="selectedProject">
@@ -144,6 +147,7 @@
 </template>
 
 <script setup lang="ts">
+import AppIcon from '@/components/AppIcon.vue'
 import { onMounted, reactive, ref } from 'vue'
 import InputText from 'primevue/inputtext';
 import InputNumber from 'primevue/inputnumber';
@@ -478,7 +482,7 @@ const confirmProjectDelete = ()=>{
       .title{
         font-size: 1.2rem;
         text-align: center;
-        padding: 20px;
+        padding: 20px 20px 20px 0;
         margin: 0;
         cursor: default;
       }
